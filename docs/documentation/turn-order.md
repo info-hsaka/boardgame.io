@@ -1,11 +1,8 @@
-# Turn Order
+# Zugreihenfolge (Turn Order)
 
-The framework's default behavior is to pass the turn around
-in a round-robin fashion. A player makes one or more moves
-before triggering an `endTurn` event, which passes the turn
-to the next player.
+Das Standardverhalten des Frameworks besteht darin, den Zug im Round-Robin-Verfahren (Reihum-Verfahren) weiterzugeben. Ein Spieler führt einen oder mehrere Spielzüge aus, bevor er ein `endTurn`-Ereignis auslöst, welches den Zug an den nächsten Spieler weitergibt.
 
-Turn order state is maintained in the following fields:
+Der Zustand der Zugreihenfolge wird in den folgenden Feldern verwaltet:
 
 ```js
 ctx: {
@@ -17,28 +14,19 @@ ctx: {
 
 ##### `currentPlayer`
 
-This is the owner of the current turn and the only player that
-can normally make moves during the turn. You may also allow
-additional players to make moves during the turn using [Stages](stages.md).
+Dies ist der Besitzer des aktuellen Zuges und normalerweise der einzige Spieler, der während des Zuges Spielzüge ausführen kann. Du kannst über [Etappen (Stages)](stages.md) auch weiteren Spielern erlauben, während des Zuges Spielzüge zu machen.
 
 ##### `playOrder`
 
-The default value is `['0', '1', '2', ... ]`. You can think of this
-as the order in which players sit down at the table. A round
-robin turn order would move `currentPlayer` through this
-list in order.
+Der Standardwert ist `['0', '1', '2', ... ]`. Man kann sich dies als die Reihenfolge vorstellen, in der sich die Spieler an den Tisch setzen. Eine Round-Robin-Zugreihenfolge würde den `currentPlayer` der Reihe nach durch diese Liste bewegen.
 
 ##### `playOrderPos`
 
-An index into `playOrder`. It is the value that is updated
-by the turn order policy in order to compute `currentPlayer`.
-The default behavior is to just increment it in a round-robin
-fashion. `currentPlayer` is just `playOrder[playOrderPos]`.
+Ein Index für `playOrder`. Dies ist der Wert, der durch die Zugreihenfolgen-Richtlinie (Turn Order Policy) aktualisiert wird, um den `currentPlayer` zu berechnen. Das Standardverhalten besteht darin, ihn einfach im Round-Robin-Verfahren zu erhöhen. `currentPlayer` ist dann einfach `playOrder[playOrderPos]`.
 
-### Changing the Turn Order
+### Ändern der Zugreihenfolge
 
-Changing the game's turn order is accomplished by using the `order`
-option inside the `turn` section of the game config:
+Das Ändern der Zugreihenfolge des Spiels erfolgt über die Option `order` innerhalb des `turn`-Abschnitts der Spielkonfiguration:
 
 ```js
 import { TurnOrder } from 'boardgame.io/core';
@@ -50,38 +38,29 @@ const game = {
 };
 ```
 
-You will typically use one of the presets below. You may also
-change the turn order at each phase of the game. See the guide
-on [Phases](phases.md) for more details.
+Typischerweise wirst du eine der unten aufgeführten Voreinstellungen verwenden. Du kannst die Zugreihenfolge auch in jeder Phase des Spiels ändern. Siehe den Leitfaden zu [Phasen](phases.md) für weitere Details.
 
-### Presets
+### Voreinstellungen (Presets)
 
 #### DEFAULT
 
-This is the default round-robin. It is used if you don't
-specify any turn order.
+Dies ist das Standard-Round-Robin-Verfahren. Es wird verwendet, wenn du keine Zugreihenfolge angibst.
 
 #### RESET
 
-This is similar to `DEFAULT`, but instead of incrementing
-the previous position at the beginning of a phase, it
-will always start from `0`.
+Dies ähnelt `DEFAULT`, aber anstatt die vorherige Position zu Beginn einer Phase zu erhöhen, wird immer bei `0` begonnen.
 
 #### CONTINUE
 
-This is also similar to `DEFAULT`, but instead of incrementing
-the previous position at the beginning of a phase, it will
-start with the player who ended the previous phase.
+Dies ähnelt ebenfalls `DEFAULT`, aber anstatt die vorherige Position zu Beginn einer Phase zu erhöhen, wird mit dem Spieler begonnen, der die vorherige Phase beendet hat.
 
 #### ONCE
 
-This is another round-robin, but it goes around only once.
-After this, the phase ends automatically.
+Dies ist ein weiteres Round-Robin-Verfahren, das jedoch nur einmal reihum geht. Danach endet die Phase automatisch.
 
 #### CUSTOM
 
-Round-robin like `DEFAULT`, but sets `playOrder` to the provided
-value.
+Round-Robin wie `DEFAULT`, setzt aber `playOrder` auf den angegebenen Wert.
 
 ```js
 turn: {
@@ -91,8 +70,7 @@ turn: {
 
 #### CUSTOM_FROM
 
-Round-robin like `DEFAULT`, but sets `playOrder` to the value
-in a specified field in `G`.
+Round-Robin wie `DEFAULT`, setzt aber `playOrder` auf den Wert eines bestimmten Feldes in `G`.
 
 ```js
 turn: {
@@ -102,16 +80,15 @@ turn: {
 
 ### Ad Hoc
 
-You can also specify the next player during the `endTurn` event.
+Du kannst den nächsten Spieler auch während des `endTurn`-Ereignisses festlegen.
 
 ```js
 endTurn({ next: playerID });
 ```
 
-This argument can also be the return value of `turn.endIf` and
-works the same way.
+Dieses Argument kann auch der Rückgabewert von `turn.endIf` sein und funktioniert auf die gleiche Weise.
 
-Player `3` is made the new player in both examples below:
+In beiden folgenden Beispielen wird Spieler `3` zum neuen Spieler gemacht:
 
 ```js
 function Move({ events }) {
@@ -127,26 +104,25 @@ const game = {
 };
 ```
 
-### Creating a Custom Turn Order
+### Eine benutzerdefinierte Zugreihenfolge erstellen
 
-If the presets above aren't what you're looking for, you can
-create a custom turn order from scratch:
+Wenn die oben genannten Voreinstellungen nicht das sind, was du suchst, kannst du eine benutzerdefinierte Zugreihenfolge von Grund auf neu erstellen:
 
 ```js
 turn: {
   order: {
-    // Get the initial value of playOrderPos.
-    // This is called at the beginning of the phase.
+    // Ermittelt den Anfangswert von playOrderPos.
+    // Dies wird zu Beginn der Phase aufgerufen.
     first: ({ G, ctx }) => 0,
 
-    // Get the next value of playOrderPos.
-    // This is called at the end of each turn.
-    // The phase ends if this returns undefined.
+    // Ermittelt den nächsten Wert von playOrderPos.
+    // Dies wird am Ende jedes Zuges aufgerufen.
+    // Die Phase endet, wenn dies undefined zurückgibt.
     next: ({ G, ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
 
     // OPTIONAL:
-    // Override the initial value of playOrder.
-    // This is called at the beginning of the game / phase.
+    // Überschreibt den Anfangswert von playOrder.
+    // Dies wird zu Beginn des Spiels / der Phase aufgerufen.
     playOrder: ({ G, ctx }) => [...],
   }
 }

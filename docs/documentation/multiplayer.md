@@ -1,54 +1,54 @@
 # Multiplayer
 
-In this section, we'll explain how the framework converts your
-game logic into a multiplayer implementation without requiring
-you to write any networking or storage layer code. We will continue
-working with our Tic-Tac-Toe example from the [tutorial](tutorial.md).
+In diesem Abschnitt erklären wir, wie das Framework deine
+Spiellogik in eine Multiplayer-Implementierung umwandelt, ohne dass
+du Netzwerk- oder Speicherschicht-Code schreiben musst. Wir arbeiten
+weiter mit unserem Tic-Tac-Toe-Beispiel aus dem [Tutorial](tutorial.md).
 
-### Clients and Masters
+### Clients und Master
 
-A boardgame.io client is what you create using the `Client` call.
-You initialize it with your game object (which contains the moves),
-so it has all the information that is needed to run the game.
-This is where the story ends in a single player setup.
+Ein boardgame.io-Client ist das, was du mit dem `Client`-Aufruf erstellst.
+Du initialisierst ihn mit deinem Spielobjekt (das die Spielzüge enthält),
+sodass er über alle Informationen verfügt, die zur Ausführung des Spiels benötigt werden.
+In einem Einzelspieler-Setup endet die Geschichte hier.
 
-In a multiplayer setup, clients no longer act as authoritative
-stores of the game state. Instead, they delegate the running of the
-game to a game master. In this mode clients emit moves / events,
-but the game logic runs on the master, which computes the next game state
-before broadcasting it to other clients.
+In einem Multiplayer-Setup fungieren Clients nicht mehr als maßgebliche
+Speicher des Spielzustands. Stattdessen delegieren sie die Ausführung des
+Spiels an einen Game Master (Spielleiter). In diesem Modus senden Clients Spielzüge / Ereignisse,
+aber die Spiellogik läuft auf dem Master, der den nächsten Spielzustand berechnet,
+bevor er ihn an andere Clients sendet.
 
-However, since clients are aware of the game rules, they also
-run the game in parallel (this is called an optimistic update and is
-an optimization that provides a lag-free experience).
-In case a particular client computes the new game state incorrectly,
-it is overridden by the master eventually, so the entire setup still
-has a single source of authority. If a move accesses state that is not
-accessible to the client (for instance secret state), then optimistic
-updates may need to be disabled for that move. See the
-[secret state documentation](secret-state.md) for more details.
+Da die Clients jedoch die Spielregeln kennen, führen sie das Spiel auch
+parallel aus (dies wird als optimistisches Update bezeichnet und ist
+eine Optimierung, die ein verzögerungsfreies Erlebnis bietet).
+Falls ein bestimmter Client den neuen Spielzustand falsch berechnet,
+wird er schließlich vom Master überschrieben, sodass das gesamte Setup weiterhin
+eine einzige maßgebliche Quelle hat. Wenn ein Spielzug auf einen Zustand zugreift, der für den
+Client nicht zugänglich ist (zum Beispiel geheimer Zustand), müssen optimistische
+Updates für diesen Spielzug möglicherweise deaktiviert werden. Siehe die
+[Dokumentation zum geheimen Zustand](secret-state.md) für weitere Details.
 
-## Local Master
+## Lokaler Master
 
-The game master can run completely on the browser. This is useful to set
-up pass-and-play multiplayer or for prototyping the multiplayer experience
-without having to set up a server to test it.
+Der Game Master kann vollständig im Browser laufen. Dies ist nützlich, um
+Pass-and-Play-Multiplayer einzurichten oder um das Multiplayer-Erlebnis als Prototyp
+zu testen, ohne einen Server aufsetzen zu müssen.
 
-To do this `import { Local } from 'boardgame.io/multiplayer'`,
-and add `multiplayer: Local()` to the client options.
-Now you can instantiate as many of these clients in your app as you like and
-you will notice that they’re all kept in sync, sharing the same state.
+Importiere dazu `import { Local } from 'boardgame.io/multiplayer'`
+und füge `multiplayer: Local()` zu den Client-Optionen hinzu.
+Nun kannst du so viele dieser Clients in deiner App instanziieren, wie du möchtest, und
+du wirst bemerken, dass sie alle synchron gehalten werden und denselben Zustand teilen.
 
 <!-- tabs:start -->
 
 #### **Plain JS**
 
-Let’s update our `TicTacToeClient` to receive an additional `playerID`
-option in its constructor. We’ll use this so that each client knows
-which player it is playing for.
+Aktualisieren wir unseren `TicTacToeClient`, um eine zusätzliche `playerID`-Option
+in seinem Konstruktor zu erhalten. Wir verwenden diese, damit jeder Client weiß,
+für welchen Spieler er spielt.
 
-Then, we’ll update how we create the boardgame.io client, passing
-`playerID` and setting `multiplayer` to use the Local Master.
+Dann aktualisieren wir die Erstellung des boardgame.io-Clients, übergeben die
+`playerID` und setzen `multiplayer` auf den Local Master.
 
 ```js
 import { Client } from 'boardgame.io/client';
@@ -66,10 +66,10 @@ class TicTacToeClient {
   }
   // ...
 }
-````
+```
 
-Now instead of rendering one client into our app, we’ll render
-one for each player ID:
+Anstatt nun einen Client in unserer App zu rendern, rendern wir
+einen für jede Spieler-ID:
 
 ```js
 const appElement = document.getElementById('app');
@@ -113,46 +113,46 @@ export default App;
 [![Edit boardgame.io](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/boardgameio-dibw3)
 <!-- tabs:end -->
 
-?> You may be wondering what the `playerID` parameter is from the
-example above. Clients needs to be associated with a particular player
-seat in order to make moves in a multiplayer setup. (If a client doesn’t have
-a `playerID` it is a spectator that can see the live game state, but can't
-actually make any moves.)
+?> Du fragst dich vielleicht, was der Parameter `playerID` im
+obigen Beispiel ist. Clients müssen einem bestimmten Spielerplatz
+zugeordnet sein, um in einem Multiplayer-Setup Spielzüge ausführen zu können. (Wenn ein Client keine
+`playerID` hat, ist er ein Zuschauer, der den Live-Spielzustand sehen, aber keine
+Spielzüge ausführen kann.)
 
 ```react
 <iframe class='plain' src='snippets/multiplayer' height='250' scrolling='no' title='example' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>
 ```
 
-In the example above you can play as Player 0 and Player 1 alternately
-on the two boards. Clicking on a particular board when it is not that
-player's turn has no effect.
+Im obigen Beispiel kannst du abwechselnd als Spieler 0 und Spieler 1
+auf den beiden Brettern spielen. Das Klicken auf ein bestimmtes Brett, wenn dieser
+Spieler nicht an der Reihe ist, hat keine Auswirkungen.
 
-### Storing state in the browser
+### Zustand im Browser speichern
 
-If you want game state to be saved in the browser using `localStorage`,
-you can pass additional options when creating a local master:
+Wenn du möchtest, dass der Spielzustand im Browser mit `localStorage` gespeichert wird,
+kannst du beim Erstellen eines lokalen Masters zusätzliche Optionen übergeben:
 
 ```js
 Local({
-  // Enable localStorage cache.
+  // localStorage-Cache aktivieren.
   persist: true,
 
-  // Set custom prefix to store data under. Default: 'bgio'.
+  // Benutzerdefiniertes Präfix zum Speichern der Daten festlegen. Standard: 'bgio'.
   storageKey: 'bgio',
 });
 ```
 
-## Remote Master
+## Entfernter Master
 
-// TODO icorporate our server setup
+// TODO unseren Server-Setup integrieren
 
-You can also run the game master on a separate server. Any boardgame.io
-client can connect to this master (whether it is a browser, an Android
-app etc.) and it will be kept in sync with other clients in realtime.
+Du kannst den Game Master auch auf einem separaten Server laufen lassen. Jeder boardgame.io-Client
+kann sich mit diesem Master verbinden (sei es ein Browser, eine Android-App
+usw.) und wird in Echtzeit mit anderen Clients synchron gehalten.
 
-In order to connect a client to a remote master, we use the `multiplayer`
-option again, but this time we import `SocketIO` instead of `Local`,
-and specify the location of the server.
+Um einen Client mit einem entfernten Master zu verbinden, verwenden wir erneut die
+`multiplayer`-Option, aber diesmal importieren wir `SocketIO` anstelle von `Local`
+und geben den Standort des Servers an.
 
 <!-- tabs:start -->
 
@@ -174,13 +174,13 @@ class TicTacToeClient {
 }
 ```
 
-We also need to make a small tweak to our `update` method.
-When using a remote master, the client won’t know the game state
-when it first runs, so `update` will be called first with `null`,
-then with the full game state after it connects to the server.
+Wir müssen auch eine kleine Anpassung an unserer `update`-Methode vornehmen.
+Bei Verwendung eines entfernten Masters kennt der Client den Spielzustand
+beim ersten Ausführen nicht, daher wird `update` zuerst mit `null` aufgerufen,
+und dann mit dem vollständigen Spielzustand, nachdem die Verbindung zum Server hergestellt wurde.
 
-In a real implementation you might show a loading spinner to indicate
-this, but we’ll just skip our `update` for now if state is `null`:
+In einer echten Implementierung würdest du vielleicht einen Lade-Spinner anzeigen, um
+dies anzuzeigen, aber wir überspringen unser `update` vorerst einfach, wenn der Zustand `null` ist:
 
 ```js
 update(state) {
@@ -203,20 +203,20 @@ const TicTacToeClient = Client({
 
 <!-- tabs:end -->
 
-Behind the scenes, the client now sends updates to the remote master
-via a WebSocket whenever you make a move. Of course, we now need to run
-a server at the location specified, which is discussed below.
+Hinter den Kulissen sendet der Client nun bei jedem Spielzug Aktualisierungen an den entfernten Master
+über einen WebSocket. Natürlich müssen wir jetzt einen Server am angegebenen
+Standort betreiben, was unten besprochen wird.
 
-### Setting up the server
+### Den Server einrichten
 
-We’ll create a new file at `src/server.js` to write our server code.
+Wir erstellen eine neue Datei unter `src/server.js`, um unseren Server-Code zu schreiben.
 
-boardgame.io provides a server module that simplifies running the game
-master on a Node server. We import that module and configure it with our
-`TicTacToe` game object and a list of URL origins we want to allow to
-connect to the server. Later you would set `origins` with your game’s domain
-name, but for now we’ll import a default value that allows any locally served
-page to connect.
+boardgame.io bietet ein Server-Modul, das den Betrieb des Game Masters
+auf einem Node-Server vereinfacht. Wir importieren dieses Modul und konfigurieren es mit unserem
+`TicTacToe`-Spielobjekt und einer Liste von URL-Origins, denen wir die
+Verbindung zum Server erlauben wollen. Später würdest du `origins` mit dem Domainnamen
+deines Spiels festlegen, aber vorerst importieren wir einen Standardwert, der jeder lokal bereitgestellten
+Seite die Verbindung erlaubt.
 
 ```js
 // src/server.js
@@ -231,18 +231,18 @@ const server = Server({
 server.run(8000);
 ```
 
-?> See [the Server reference page](api/Server.md) for more detail on
-   the various configuration options.
+?> Siehe [die Server-Referenzseite](api/Server.md) für weitere Details zu
+   den verschiedenen Konfigurationsoptionen.
 
-Because `Game.js` is an ES module, we will use [esm](https://github.com/standard-things/esm)
-which enables us to use `import` statements in a Node environment:
+Da `Game.js` ein ES-Modul ist, verwenden wir [esm](https://github.com/standard-things/esm),
+was es uns ermöglicht, `import`-Anweisungen in einer Node-Umgebung zu verwenden:
 
 ```
 npm install esm
 ```
 
-We can then add a new script to our `package.json` to simplify
-running the server:
+Wir können dann ein neues Skript zu unserer `package.json` hinzufügen, um das
+Ausführen des Servers zu vereinfachen:
 
 ```json
 {
@@ -252,69 +252,68 @@ running the server:
 }
 ```
 
-We can now run `npm run serve` in one terminal to start the server and
-`npm start` in another to serve our web app.
-You can connect multiple clients to the same game by opening
-your app in several different browser tabs.
-You will notice that everything is kept in sync as you play
-(state is not lost even if you refresh the page).
+Wir können nun `npm run serve` in einem Terminal ausführen, um den Server zu starten, und
+`npm start` in einem anderen, um unsere Web-App bereitzustellen.
+Du kannst mehrere Clients mit demselben Spiel verbinden, indem du
+deine App in mehreren verschiedenen Browser-Tabs öffnest.
+Du wirst bemerken, dass während des Spielens alles synchron gehalten wird
+(der Zustand geht nicht verloren, selbst wenn du die Seite aktualisierst).
 
-This example still has both players on the same screen. A more natural
-setup would be to have each client just have a single (but distinct)
-player.
+In diesem Beispiel befinden sich beide Spieler noch auf demselben Bildschirm. Ein natürlicheres
+Setup wäre, wenn jeder Client nur einen einzigen (aber unterschiedlichen)
+Spieler hätte.
 
 <!-- tabs:start -->
 #### **Plain JS**
 
-You want one client to render:
+Du möchtest, dass ein Client gerendert wird:
 ```js
 new TicTacToeClient(appElement, { playerID: '0' });
 ```
 
-and another to render:
+und ein anderer:
 ```js
 new TicTacToeClient(appElement, { playerID: '1' });
 ```
 
 #### **React**
 
-You want one client to render:
+Du möchtest, dass ein Client gerendert wird:
 ```
 <TicTacToeClient playerID="0" />
 ```
 
-and another to render:
+und ein anderer:
 ```
 <TicTacToeClient playerID="1" />
 ```
 <!-- tabs:end -->
 
-One way to do this is to ask the player which seat they
-want to take when they open your app and then set the
-`playerID` accordingly. You can also use a URL path to
-determine the player or use a matchmaking lobby.
+Eine Möglichkeit, dies zu tun, besteht darin, den Spieler beim Öffnen deiner App zu fragen, welchen Platz er
+einnehmen möchte, und dann die `playerID` entsprechend zu setzen.
+Du kannst auch einen URL-Pfad verwenden, um den Spieler zu bestimmen, oder eine Matchmaking-Lobby nutzen.
 
-Complete code from this section is available on CodeSandbox for both
-[React](https://codesandbox.io/s/boardgameio-fsl8y) and
-[Plain JS](https://codesandbox.io/s/bgio-plain-js-multiplayer-server-742oh)
-versions.
-To run the server, you can click **File** > **Export to ZIP** to download
-the project, then run the server and client as described
-above. Don't forget to run `npm install` in the project directory first!
+Der vollständige Code aus diesem Abschnitt ist auf CodeSandbox sowohl für die
+[React](https://codesandbox.io/s/boardgameio-fsl8y)- als auch für die
+[Plain JS](https://codesandbox.io/s/bgio-plain-js-multiplayer-server-742oh)-Version
+verfügbar.
+Um den Server auszuführen, kannst du auf **File** > **Export to ZIP** klicken, um
+das Projekt herunterzuladen, und dann den Server und den Client wie oben beschrieben ausführen.
+Vergiss nicht, zuerst `npm install` im Projektverzeichnis auszuführen!
 
-?> **TIP** You can also set the `playerID` to point to any player while
-prototyping by clicking on the box of that respective player on the debug UI.
+?> **TIPP** Du kannst die `playerID` während des Prototypings auch auf einen beliebigen Spieler setzen,
+indem du im Debug-UI auf das Feld des jeweiligen Spielers klickst.
 
-### Multiple Game Types
+### Mehrere Spieltypen
 
-You can serve multiple types of games from the same server:
+Du kannst mehrere Arten von Spielen über denselben Server bereitstellen:
 
 ```js
 const app = Server({ games: [TicTacToe, Chess] });
 ```
 
-For this to work correctly, make sure that each game
-implementation specifies a name:
+Damit dies korrekt funktioniert, stelle sicher, dass jede Spielimplementierung
+einen Namen angibt:
 
 ```js
 const TicTacToe = {
@@ -323,18 +322,18 @@ const TicTacToe = {
 };
 ```
 
-### Game Instances
+### Spielinstanzen
 
-By default all client instances connect to a game with
-an ID `'default'`. To play a new game instance, you can pass
-`matchID` to your client. All clients that use
-this ID will now see the same game state.
+Standardmäßig verbinden sich alle Client-Instanzen mit einem Spiel mit
+der ID `'default'`. Um eine neue Spielinstanz zu spielen, kannst du `matchID`
+an deinen Client übergeben. Alle Clients, die diese ID verwenden,
+sehen nun denselben Spielzustand.
 
 <!-- tabs:start -->
 
 #### **Plain JS**
 
-Pass `matchID` when creating your boardgame.io client:
+Übergib `matchID` beim Erstellen deines boardgame.io-Clients:
 ```js
 const client = Client({
   game: TicTacToe,
@@ -343,9 +342,9 @@ const client = Client({
 });
 ```
 
-You an also update a `matchID` on an already instantiated client:
+Du kannst eine `matchID` auch bei einem bereits instanziierten Client aktualisieren:
 ```js
-client.updateMatchID('newID');
+client.updateMatchID('neueID');
 ```
 
 #### **React**
@@ -355,13 +354,13 @@ client.updateMatchID('newID');
 ```
 <!-- tabs:end -->
 
-The `matchID`, similar to the `playerID` can again be determined
-either by a URL path or a lobby implementation.
+Die `matchID` kann, ähnlich wie die `playerID`, wiederum entweder
+durch einen URL-Pfad oder eine Lobby-Implementierung bestimmt werden.
 
-### Storage
+### Speicherung
 
-The default storage implementation is an in-memory map.
-If you want something that's more persistent, you can use one
-of the available database connectors, or even implement your own.
+Die Standard-Speicherimplementierung ist eine In-Memory-Map.
+Wenn du etwas Dauerhafteres möchtest, kannst du einen
+der verfügbaren Datenbank-Connectoren verwenden oder sogar deinen eigenen implementieren.
 
-See [the storage docs](storage.md) for more details.
+Siehe die [Speicher-Dokumentation](storage.md) für weitere Details.

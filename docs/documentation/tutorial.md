@@ -1,72 +1,70 @@
 # Tutorial
 
-The goal of this tutorial is to make a simple TicTacToe game using boardgame.io. 
-You'll learn the basic concepts of boardgame.io and how to use them and in the end you'll have a working game.
+Das Ziel dieses Tutorials ist es, ein einfaches Tic-Tac-Toe-Spiel mit boardgame.io zu erstellen.
+Du wirst die grundlegenden Konzepte von boardgame.io kennenlernen und erfahren, wie man sie einsetzt. Am Ende wirst du ein funktionierendes Spiel haben.
 
 [node]: https://nodejs.dev/learn/how-to-install-nodejs
 [cmd]: https://tutorial.djangogirls.org/en/intro_to_command_line/
 [vsc]: https://code.visualstudio.com/
 [atom]: https://atom.io/
 
-
-
 ## Setup
 
-Clone the boardgame.io template repository from https://github.com/info-hsaka/boardgame-template .
-(See here for instructions on how to do that: https://js.oc.is/docs/intro/setup/#34-clone-git-repository)
-Like before we need to install some additional programs by running `npm i` in the folder. Take a look here for more detailed (and Windows!) instructions:  https://js.oc.is/docs/intro/setup/#35-weitere-programme-installieren
+Klone das boardgame.io-Template-Repository von https://github.com/info-hsaka/boardgame-template .
+(Siehe hier für Anweisungen dazu: https://js.oc.is/docs/intro/setup/#34-clone-git-repository)
+Wie zuvor müssen wir einige zusätzliche Programme installieren, indem wir `npm i` im Ordner ausführen. Schau hier für detailliertere (und Windows!) Anweisungen: https://js.oc.is/docs/intro/setup/#35-weitere-programme-installieren
 
-As with the JS tutorial, you should be able to click on the "Run" button to start the game. (See https://js.oc.is/docs/intro/howto/ for a refresher on that)
-You should be able to see a website by navigating your browser to http://localhost:3000/
+Wie beim JS-Tutorial solltest du auf die Schaltfläche „Run“ klicken können, um das Spiel zu starten. (Siehe https://js.oc.is/docs/intro/howto/ für eine Auffrischung dazu)
+Du solltest eine Website sehen können, wenn du in deinem Browser zu http://localhost:3000/ navigierst.
 
-Once you have cloned the template repository, this tutorial will work in the src/TicTacToe.js file. You can look at the other files in the src folder, but you don't need to change them for this tutorial. The src/Game.js file includes a game object with a few more functions added to it, so you  can get a sense for what will be possible later on. For now we will focus on the TicTacToe object in the TicTacToe.js file.
+Sobald du das Template-Repository geklont hast, wird dieses Tutorial in der Datei `src/TicTacToe.js` stattfinden. Du kannst dir die anderen Dateien im Ordner `src` ansehen, musst sie aber für dieses Tutorial nicht ändern. Die Datei `src/Game.js` enthält ein Spielobjekt mit ein paar weiteren hinzugefügten Funktionen, damit du ein Gefühl dafür bekommst, was später möglich sein wird. Vorerst konzentrieren wir uns auf das `TicTacToe`-Objekt in der Datei `TicTacToe.js`.
 
-## Defining a Game
+## Ein Spiel definieren
 
-We define a game by creating an object which contains information about your game to
-tell boardgame.io how it works. More or less everything
-is optional, so we can start simple and gradually add more complexity.
-In the template most functions are already defined but not filled out, which means you'll have to fill in the relevant parts.
+Wir definieren ein Spiel, indem wir ein Objekt erstellen, das Informationen über dein Spiel enthält, um
+boardgame.io mitzuteilen, wie es funktioniert. Mehr oder weniger alles
+ist optional, sodass wir einfach anfangen und nach und nach mehr Komplexität hinzufügen können.
+Im Template sind die meisten Funktionen bereits definiert, aber nicht ausgefüllt, was bedeutet, dass du die relevanten Teile ausfüllen musst.
 
-To start, we’ll fill the `setup` function in the file `src/Game.js`, which will set the
-initial value of the game state `G`. 
+Zu Beginn füllen wir die `setup`-Funktion in der Datei `src/Game.js` aus, die den
+Anfangswert des Spielzustands `G` festlegt.
 
-?> The game state `G` is a plain JavaScript object that represents the state of the game as we talked about during the in-person session. If, at any point, you have questions about parts of boardgame.io or other concepts that we use here, feel free to ask and also look around at the rest of the documentation here.
+?> Der Spielzustand `G` ist ein einfaches JavaScript-Objekt, das den Zustand des Spiels repräsentiert, wie wir es während der Präsenzveranstaltung besprochen haben. Wenn du zu irgendeinem Zeitpunkt Fragen zu Teilen von boardgame.io oder anderen Konzepten hast, die wir hier verwenden, kannst du gerne fragen und dich auch im Rest der Dokumentation hier umsehen.
 
 ```js
 export const TicTacToe = {
-  // Fill the cells of the TicTacToe board with `null` to indicate that they are empty.
-  // This is the initial state of the game.
-  // This syntax might be new, but we're just defining a function in a JavaScript object.
-  // The function will be available in the `setup` field of the `TicTacToe` object and would
-  // be called like this: `TicTacToe.setup()`. However we don't need to call it ourselves, boardgame.io will do that for us.
+  // Fülle die Zellen des Tic-Tac-Toe-Spielfelds mit `null`, um anzuzeigen, dass sie leer sind.
+  // Dies ist der Anfangszustand des Spiels.
+  // Diese Syntax mag neu sein, aber wir definieren hier nur eine Funktion in einem JavaScript-Objekt.
+  // Die Funktion wird im Feld `setup` des `TicTacToe`-Objekts verfügbar sein und würde
+  // so aufgerufen werden: `TicTacToe.setup()`. Wir müssen sie jedoch nicht selbst aufrufen, boardgame.io wird das für uns tun.
   setup: function setup() {
     return { cells: [null, null, null, null, null, null, null, null, null] }
   }
 };
 ```
 
-Next up is the `moves` object.
+Als Nächstes kommt das `moves`-Objekt.
 
-A move is a function that takes some input (like the cell a player clicked on) and updates `G` to the desired new state.
-"Moves" represent things a player can do in the game. In TicTacToe it's pretty simple: a player can click on a cell to place their mark there.
+Ein Spielzug (Move) ist eine Funktion, die eine Eingabe entgegennimmt (z. B. die Zelle, auf die ein Spieler geklickt hat) und `G` auf den gewünschten neuen Zustand aktualisiert.
+„Moves“ repräsentieren Dinge, die ein Spieler im Spiel tun kann. In Tic-Tac-Toe ist es ziemlich einfach: Ein Spieler kann auf eine Zelle klicken, um dort seine Markierung zu setzen.
 
-The `moves` object is a collection of all possible moves with their names as a normal JavaScript object:
+Das `moves`-Objekt ist eine Sammlung aller möglichen Spielzüge mit ihren Namen als normales JavaScript-Objekt:
 
 ```js
 export const TicTacToe = {
-  // I won't repeat everything in the object, just new parts that were added
+  // Ich werde nicht alles im Objekt wiederholen, nur neue Teile, die hinzugefügt wurden
   // ...
 
   moves: {
     clickCell: () => {
-      console.log("A clickCell move was made!")
+      console.log("Ein clickCell-Spielzug wurde ausgeführt!")
     },
   },
 }
 ```
 
-Move functions take an argument that contains a few fields, most importantly `G` and `playerID`. `G` is the game state object that we set up with the `setup` function and `playerID` is the ID (short for identifier, in our case 0 or 1) of the player who made the move. The second argument can be anything else we need to pass to make a valid move. We will see later how to use that. In this case, we need to know in which cell the player would like to place their X/O, so we add a second argument `cellIndex` to the `clickCell` function.
+Spielzug-Funktionen erhalten ein Argument, das einige Felder enthält, vor allem `G` und `playerID`. `G` ist das Spielzustandsobjekt, das wir mit der `setup`-Funktion eingerichtet haben, und `playerID` ist die ID (Abkürzung für Identifikator, in unserem Fall 0 oder 1) des Spielers, der den Spielzug gemacht hat. Das zweite Argument kann alles andere sein, was wir übergeben müssen, um einen gültigen Spielzug auszuführen. Wir werden später sehen, wie man das benutzt. In diesem Fall müssen wir wissen, in welche Zelle der Spieler sein X/O setzen möchte, also fügen wir der Funktion `clickCell` ein zweites Argument `cellIndex` hinzu.
 
 ```js
 export const TicTacToe = {
@@ -74,13 +72,13 @@ export const TicTacToe = {
 
   moves: {
     clickCell: function clickCell(move, cellIndex) {
-      console.log("Player number " + move.playerID + " wants to place their mark in cell " + cellIndex)
+      console.log("Spieler Nummer " + move.playerID + " möchte seine Markierung in Zelle " + cellIndex + " setzen")
     },
   },
 }
 ```
 
-Now to update the game state, we simply update G in our move function:
+Um nun den Spielzustand zu aktualisieren, aktualisieren wir einfach `G` in unserer Spielzug-Funktion:
 
 ```js
 export const TicTacToe = {
@@ -88,20 +86,20 @@ export const TicTacToe = {
 
   moves: {
     clickCell: function clickCell(move, cellIndex) {
-      // cells is the array we setup in the setup function and we simply assign the playerID to the cellIndex
-      // to indicate which player has placed their mark there.
+      // cells ist das Array, das wir in der setup-Funktion eingerichtet haben, und wir weisen dem cellIndex einfach die playerID zu,
+      // um anzuzeigen, welcher Spieler dort seine Markierung gesetzt hat.
       move.G.cells[cellIndex] = move.playerID;
     },
   },
 }
 ```
 
-?> The `setup` function also receives an object as its first argument
-like moves. This is useful if you need to customize the initial
-state based on some field in `ctx` — the number of players, for example —
-but we don't need that for Tic-Tac-Toe.
+?> Die `setup`-Funktion erhält ebenfalls ein Objekt als erstes Argument,
+genau wie Spielzüge. Dies ist nützlich, wenn du den Anfangszustand
+basierend auf einem Feld in `ctx` anpassen musst – zum Beispiel der Anzahl der Spieler –
+aber für Tic-Tac-Toe brauchen wir das nicht.
 
-At this point your TicTacToe.js file should look like this:
+Zu diesem Zeitpunkt sollte deine Datei `TicTacToe.js` so aussehen:
 
 ```js
 export const TicTacToe = {
@@ -111,47 +109,36 @@ export const TicTacToe = {
 
   moves: {
     clickCell: function clickCell(move, cellIndex) {
-      // cells is the array we setup in the setup function and we simply assign the playerID to the cellIndex
-      // to indicate which player has placed their mark there.
+      // cells ist das Array, das wir in der setup-Funktion eingerichtet haben, und wir weisen dem cellIndex einfach die playerID zu,
+      // um anzuzeigen, welcher Spieler dort seine Markierung gesetzt hat.
       move.G.cells[cellIndex] = move.playerID;
     },
   },
 }
 ```
 
-You can now click the "Run" button to see the game in action. Go to http://localhost:3000/ to see the game.
+Du kannst jetzt auf die Schaltfläche „Run“ klicken, um das Spiel in Aktion zu sehen. Gehe zu http://localhost:3000/, um das Spiel zu sehen.
 
-At this point you should see an empty TicTacToe board and the boardgame.io Debug Panel.
-This panel means we can already play our Tic-Tac-Toe game!
+Zu diesem Zeitpunkt solltest du ein leeres Tic-Tac-Toe-Spielfeld und das boardgame.io Debug Panel sehen.
+Dieses Panel bedeutet, dass wir unser Tic-Tac-Toe-Spiel bereits spielen können!
 
-You can make a move by clicking on `clickCell` on the
-Debug Panel, entering a number between `0` and `8` in the (), and pressing
-**Enter**. The current player will make a move on the chosen
-cell. The number you enter is the `id` passed to the `clickCell` function as
-the first argument after `move`. Notice how the
-`cells` array on the Debug Panel updates as you make moves. You
-can end the turn by clicking `endTurn` and pressing **Enter**. The next call to
-`clickCell` will result in a “1” in the chosen cell instead of a “0”.
+Du kannst einen Spielzug machen, indem du im Debug Panel auf `clickCell` klickst, eine Zahl zwischen `0` und `8` in die Klammern `()` eingibst und **Enter** drückst. Der aktuelle Spieler wird einen Spielzug auf der gewählten Zelle ausführen. Die Zahl, die du eingibst, ist die `id`, die als erstes Argument nach `move` an die Funktion `clickCell` übergeben wird. Beachte, wie sich das `cells`-Array im Debug Panel aktualisiert, während du Spielzüge machst. Du kannst den Zug beenden, indem du auf `endTurn` klickst und **Enter** drückst. Der nächste Aufruf von `clickCell` führt zu einer „1“ in der gewählten Zelle anstelle einer „0“.
 
-?> You can turn off the Debug Panel by passing `debug: false`
-in the `Client` config.
+?> Du kannst das Debug Panel ausschalten, indem du `debug: false` in der `Client`-Konfiguration übergibst.
 
-## Game Improvements
+## Spielverbesserungen
 
-### Validating Moves
+### Spielzüge validieren
 
-So far, if a player calls `clickCell` for a cell that is already filled,
-it will be overwritten. Let’s prevent that by updating `clickCell`
-to let us know that a move is invalid if the selected cell isn’t `null`.
+Bisher wird eine bereits ausgefüllte Zelle überschrieben, wenn ein Spieler `clickCell` aufruft. Lassen wir das verhindern, indem wir `clickCell` so aktualisieren, dass es uns mitteilt, dass ein Spielzug ungültig ist, wenn die ausgewählte Zelle nicht `null` ist.
 
-Moves can let the framework know they are invalid by returning a
-special constant which we import into `src/Game.js`:
+Spielzüge können dem Framework mitteilen, dass sie ungültig sind, indem sie eine spezielle Konstante zurückgeben, die wir in `src/Game.js` importieren:
 
 ```js
 import { INVALID_MOVE } from 'boardgame.io/core';
 ```
 
-Now we can return `INVALID_MOVE` from `clickCell`:
+Jetzt können wir `INVALID_MOVE` von `clickCell` zurückgeben:
 
 ```js
 import { INVALID_MOVE } from 'boardgame.io/core';
@@ -170,19 +157,14 @@ export const TicTacToe = {
 }
 ```
 
-### Managing Turns
+### Züge verwalten
 
-In the Debug Panel we clicked `endTurn` to pass the turn
-to the next player after making a move. We could do this from our
-client code too: make a move, then end the turn. This could be flexible
-because a player could choose when to end their turn, but in
-Tic-Tac-Toe we know that the turn should always end when a move is made.
+Im Debug Panel haben wir auf `endTurn` geklickt, um den Zug nach einem Spielzug an den nächsten Spieler zu übergeben. Das könnten wir auch in unserem Client-Code tun: einen Spielzug machen und dann den Zug beenden. Das wäre flexibel, weil ein Spieler selbst entscheiden könnte, wann er seinen Zug beendet, aber in Tic-Tac-Toe wissen wir, dass der Zug immer enden sollte, wenn ein Spielzug gemacht wurde.
 
-There are several different ways to manage turns in boardgame.io.
-We’ll use the `maxMoves` option in our game definition to tell
-the framework to automatically end a player’s turn after a single
-move has been made, as well as the `minMoves` option, so players
-*have* to make a move and can't just `endTurn`.
+Es gibt verschiedene Möglichkeiten, Züge in boardgame.io zu verwalten.
+Wir verwenden die Option `maxMoves` in unserer Spieldefinition, um dem
+Framework mitzuteilen, dass der Zug eines Spielers automatisch nach einem einzigen
+Spielzug beendet werden soll, sowie die Option `minMoves`, damit Spieler einen Spielzug machen *müssen* und nicht einfach `endTurn` aufrufen können.
 
 ```js
 export const TicTacToe = {
@@ -196,37 +178,37 @@ export const TicTacToe = {
 }
 ```
 
-Try playing around with the game in the debug panel again. You should see that you can't make a move in a cell that is already filled and that the turn automatically ends after a move is made.
+Versuche noch einmal, im Debug Panel mit dem Spiel herumzuspielen. Du solltest sehen, dass du keinen Spielzug in einer bereits gefüllten Zelle machen kannst und dass der Zug automatisch endet, nachdem ein Spielzug gemacht wurde.
 
-?> You can learn more in the [Turn Order](turn-order.md)
-    and [Events](events.md) guides.
+?> Mehr erfährst du in den Leitfäden [Zugreihenfolge](turn-order.md)
+    und [Ereignisse](events.md).
 
-### Victory Condition
+### Siegbedingung
 
-The Tic-Tac-Toe game we have so far doesn't really ever end.
-Let's keep track of a winner in case one player wins the game.
+Das Tic-Tac-Toe-Spiel, das wir bisher haben, endet eigentlich nie.
+Lassen wir den Gewinner nachverfolgen, falls ein Spieler das Spiel gewinnt.
 
-In order to do that, first we need to know if a player won and if so, which one.
+Um das zu tun, müssen wir zuerst wissen, ob ein Spieler gewonnen hat und wenn ja, welcher.
 
-TicTacToe will often end in a draw, so we need to handle that as well. We can add a helper function to check if the game is over, i.e. all cells are filled.
+Tic-Tac-Toe endet oft unentschieden, daher müssen wir das ebenfalls behandeln. Wir können eine Hilfsfunktion hinzufügen, um zu prüfen, ob das Spiel vorbei ist, d. h. alle Zellen gefüllt sind.
 
 ```js
 function isDraw(cells) {
-  // Return `true` if all cells are filled and `false` otherwise
+  // Gib `true` zurück, wenn alle Zellen gefüllt sind, andernfalls `false`
 }
 ```
 
-Write the code for this function as described and we will see later how to use it.
+Schreibe den Code für diese Funktion wie beschrieben, und wir werden später sehen, wie man sie benutzt.
 
-The other problem we have is finding out if someone has won the game. In Tic-Tac-Toe, a player wins if they have three of their marks in a row, either horizontally, vertically, or diagonally. We should write a helper function to check if a player has won:
+Das andere Problem, das wir haben, ist herauszufinden, ob jemand das Spiel gewonnen hat. In Tic-Tac-Toe gewinnt ein Spieler, wenn er drei seiner Markierungen in einer Reihe hat, entweder horizontal, vertikal oder diagonal. Wir sollten eine Hilfsfunktion schreiben, um zu prüfen, ob ein Spieler gewonnen hat:
 
 ```js
 function isVictory(cells) {
-  // Return the playerID of the winner if there is one, otherwise `null`
+  // Gib die playerID des Gewinners zurück, falls es einen gibt, andernfalls `null`
 }
 ```
 
-Hints: cells is an array with exactly 9 elements and each element is either `null`, `0`, or `1`. Imagine the elements of the arary being laid out like this:
+Hinweise: `cells` ist ein Array mit genau 9 Elementen und jedes Element ist entweder `null`, `0` oder `1`. Stell dir vor, die Elemente des Arrays sind wie folgt angeordnet:
 
 ```
 0 | 1 | 2
@@ -234,11 +216,10 @@ Hints: cells is an array with exactly 9 elements and each element is either `nul
 6 | 7 | 8
 ```
 
-And then write a function that checks for a win in each row, column, and diagonal.
+Und schreibe dann eine Funktion, die jede Reihe, Spalte und Diagonale auf einen Sieg prüft.
 
-Now that we have these functions, we add an `endIf` method to our game.
-This method will be called each time our state updates to
-check if the game is over.
+Da wir nun diese Funktionen haben, fügen wir unserem Spiel eine `endIf`-Methode hinzu.
+Diese Methode wird jedes Mal aufgerufen, wenn sich unser Zustand aktualisiert, um zu prüfen, ob das Spiel vorbei ist.
 
 ```js
 export const TicTacToe = {
@@ -247,33 +228,26 @@ export const TicTacToe = {
   endIf: function endIf(endIf) {
     const winner = isVictory(endIf.G.cells);
     if (winner != null) {
-      // our isVictory function returned a playerID so the game is over and we have a winner
+      // unsere isVictory-Funktion hat eine playerID zurückgegeben, also ist das Spiel vorbei und wir haben einen Gewinner
       return { winner: winner };
     }
-    // if there is no winner, check if the game is a draw
+    // wenn es keinen Gewinner gibt, prüfe, ob das Spiel unentschieden ist
     if (isDraw(endIf.G.cells)) {
-      // the game is a draw, so we tell boardgame.io that result
+      // das Spiel ist unentschieden, also teilen wir boardgame.io dieses Ergebnis mit
       return { draw: true };
     }
   },
 };
 ```
 
-?> `endIf` takes a function that determines if
-the game is over. If it returns anything at all, the game ends and
-the return value is available at `ctx.gameover`. In order for bots (see below) to work properly, the return value should be an object with a `winner` key if there is a winner. See the example above.
+?> `endIf` nimmt eine Funktion entgegen, die bestimmt, ob das Spiel vorbei ist. Wenn sie irgendetwas zurückgibt, endet das Spiel und der Rückgabewert ist unter `ctx.gameover` verfügbar. Damit Bots (siehe unten) richtig funktionieren, sollte der Rückgabewert ein Objekt mit einem `winner`-Schlüssel sein, falls es einen Gewinner gibt. Siehe das Beispiel oben.
 
 ## Bots
 
-In this section we will show you how to add a bot that is
-capable of playing your game. We need to tell the
-bot what moves are allowed in the game, and it will find moves that
-tend to produce winning results.
+In diesem Abschnitt zeigen wir dir, wie du einen Bot hinzufügst, der in der Lage ist, dein Spiel zu spielen. Wir müssen dem Bot mitteilen, welche Spielzüge im Spiel erlaubt sind, und er wird Spielzüge finden, die tendenziell zu Sieg-Ergebnissen führen.
 
-To do this, add an `ai` section to the game definition.
-The `enumerate` function should return an array of possible
-moves, so in our case it returns a `clickCell` move for every
-empty cell.
+Um dies zu tun, füge einen `ai`-Abschnitt zur Spieldefinition hinzu.
+Die Funktion `enumerate` sollte ein Array mit möglichen Spielzügen zurückgeben, in unserem Fall also einen `clickCell`-Spielzug für jede leere Zelle.
 
 ```js
 export const TicTacToe = {
@@ -281,41 +255,35 @@ export const TicTacToe = {
 
   ai: {
     enumerate: function enumerate(G)  {
-      // this function returns the top left cell as the only possible move every time
-      // Modify this function so that it will return all possible TicTacToe moves to make the
-      // bot actually play the game based on `G.cells`.
-      // Think about what moves are possible in TicTacToe and how you can find them in our cells array.
+      // diese Funktion gibt jedes Mal die Zelle oben links als einzigen möglichen Spielzug zurück
+      // Ändere diese Funktion so, dass sie alle möglichen Tic-Tac-Toe-Spielzüge zurückgibt, damit der
+      // Bot das Spiel tatsächlich basierend auf `G.cells` spielt.
+      // Überlege dir, welche Spielzüge in Tic-Tac-Toe möglich sind und wie du sie in unserem cells-Array finden kannst.
       return [{ move: 'clickCell', args: [0] }];
     },
   },
 };
 ```
 
-That's it! Now that you can visit the AI section of the Debug Panel:
+Das war's! Jetzt kannst du den KI-Abschnitt des Debug Panels besuchen:
 
-- `play` causes the bot to calculate and make a single move
-  (shortcut: <kbd>2</kbd>)
+- `play` veranlasst den Bot, einen einzelnen Spielzug zu berechnen und auszuführen
+  (Shortcut: <kbd>2</kbd>)
 
-- `simulate` causes the bot to play the entire game by itself
-  (shortcut: <kbd>3</kbd>)
+- `simulate` veranlasst den Bot, das gesamte Spiel allein zu spielen
+  (Shortcut: <kbd>3</kbd>)
 
-`play` helps you combine moves that you make yourself
-and bot moves. For example, you can make
-some manual moves to get two in a row and then verify that
-the bot makes a block.
+`play` hilft dir dabei, Spielzüge, die du selbst machst, mit Bot-Zügen zu kombinieren. Du kannst zum Beispiel einige manuelle Spielzüge machen, um zwei in eine Reihe zu bekommen, und dann überprüfen, ob der Bot einen Block setzt.
 
-?> The bot uses [MCTS](https://nicolodavis.com/blog/tic-tac-toe/) under the
-hood to explore the game tree and find good moves. The default uses
-1000 iterations per move.  This can be configured to adjust the
-bot's playing strength.
+?> Der Bot verwendet intern [MCTS](https://nicolodavis.com/blog/tic-tac-toe/), um den Spielbaum zu erkunden und gute Spielzüge zu finden. Standardmäßig werden 1000 Iterationen pro Spielzug verwendet. Dies kann konfiguriert werden, um die Spielstärke des Bots anzupassen.
 
-## Further Reading and what's next
+## Weiterführende Literatur und was als Nächstes kommt
 
-Feel free to play around more with TicTacToe and try to think about other games and how they would map to the concepts you learned.
+Du kannst gerne noch weiter mit Tic-Tac-Toe herumspielen und dir überlegen, wie sich andere Spiele auf die gelernten Konzepte übertragen lassen.
 
-In a future tutorial you will also learn how to actually draw the UI yourself, how to make it look nice and how to respond to user input.
+In einem zukünftigen Tutorial wirst du auch lernen, wie du die Benutzeroberfläche tatsächlich selbst zeichnest, wie du sie hübsch machst und wie du auf Benutzereingaben reagierst.
 
-Feel free to look around in the other files in the template, but don't worry if you don't understand everything yet. The tutorial template uses concepts that we won't even need during the HSAKA (such as HTML and CSS), because we will be using a different technology to draw the UI.
+Schau dich gerne in den anderen Dateien im Template um, aber mach dir keine Sorgen, wenn du noch nicht alles verstehst. Das Tutorial-Template verwendet Konzepte, die wir während der HSAKA gar nicht benötigen werden (wie HTML und CSS), da wir eine andere Technologie zum Zeichnen der Benutzeroberfläche verwenden werden.
 
-If you feel like you understand everything that's going on in the TicTacToe file, that's more than enough.
+Wenn du das Gefühl hast, dass du alles verstehst, was in der Tic-Tac-Toe-Datei vor sich geht, ist das mehr als genug.
 

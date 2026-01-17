@@ -1,50 +1,41 @@
-# Deployment
+# Deployment (Bereitstellung)
 
-## Serverless Options
+## Serverlose Optionen
 
-For one-player or pass-and-play games, you may not need the boardgame.io game
-server and prefer to serve an app that runs entirely on the client. If you
-don’t need multiplayer features, this can be a lot simpler than getting a
-Node.js server deployed.
+Für Ein-Spieler- oder Pass-and-Play-Spiele benötigst du möglicherweise keinen boardgame.io-Spieleserver und ziehst es vor, eine App bereitzustellen, die vollständig auf dem Client läuft. Wenn du keine Multiplayer-Funktionen benötigst, kann dies viel einfacher sein als die Bereitstellung eines Node.js-Servers.
 
-There are many services that can help deploy a static app, including some that
-offer free options like [Netlify](https://www.netlify.com/) and
-[Render](https://render.com/).
+Es gibt viele Dienste, die bei der Bereitstellung einer statischen App helfen können, darunter einige, die kostenlose Optionen anbieten, wie [Netlify](https://www.netlify.com/) und [Render](https://render.com/).
 
 <!-- tabs:start -->
 
 ### **Plain JS**
 
-If you followed along with the Plain JS tutorial, you can also use Parcel to
-build your app for production.
+Wenn du dem Plain-JS-Tutorial gefolgt bist, kannst du auch Parcel verwenden, um deine App für die Produktion zu bauen.
 
-Add a build script to your `package.json`:
+Füge ein Build-Skript zu deiner `package.json` hinzu:
 
 ```json
 {
   "scripts": {
-    "build": "parcel build index.html --out-dir build",
+    "build": "parcel build index.html --out-dir build"
   }
 }
 ```
 
-Running `npm run build` will now create an optimised production build in
-`/build`, which you can host just about anywhere.
+Das Ausführen von `npm run build` erstellt nun einen optimierten Produktions-Build in `/build`, den du fast überall hosten kannst.
 
-#### Deployment configuration
+#### Deployment-Konfiguration
 
-Both Netlify and Render offer options to continuously deploy the latest version
-of your app from a Git repository. These configurations should help you get
-up and running with these services.
+Sowohl Netlify als auch Render bieten Optionen für das kontinuierliche Deployment der neuesten Version deiner App aus einem Git-Repository. Diese Konfigurationen sollten dir helfen, mit diesen Diensten startklar zu werden.
 
 <details>
 <summary><strong>Netlify</strong></summary>
 
-1. Create a new deployment (see [Netlify docs](https://docs.netlify.com/site-deploys/create-deploys/)).
+1. Erstelle ein neues Deployment (siehe [Netlify-Dokumentation](https://docs.netlify.com/site-deploys/create-deploys/)).
 
-2. Use the following values for the deployment:
+2. Verwende die folgenden Werte für das Deployment:
 
-  | Option            | Value           |
+  | Option            | Wert            |
   |-------------------|-----------------|
   | Build Command     | `npm run build` |
   | Publish Directory | `build`         |
@@ -54,11 +45,11 @@ up and running with these services.
 <details>
 <summary><strong>Render</strong></summary>
 
-1. Create a new Web Service on Render and connect it to your project repository.
+1. Erstelle einen neuen Web Service auf Render und verbinde ihn mit deinem Projekt-Repository.
 
-2. Use the following values during creation:
+2. Verwende bei der Erstellung die folgenden Werte:
 
-  | Option            | Value           |
+  | Option            | Wert            |
   |-------------------|-----------------|
   | Environment       | `Static Site`   |
   | Build Command     | `npm run build` |
@@ -68,38 +59,37 @@ up and running with these services.
 
 ### **React**
 
-Running `npm run build` in a Create React App project will create an optimised
-production build in `/build`, which you can host just about anywhere.
+Das Ausführen von `npm run build` in einem Create-React-App-Projekt erstellt einen optimierten Produktions-Build in `/build`, den du fast überall hosten kannst.
 
-#### Deployment guides
+#### Deployment-Leitfäden
 
-- **Netlify:** See [the guide on how to deploy to Netlify](https://create-react-app.dev/docs/deployment/#netlify) in the Create React App docs.
+- **Netlify:** Siehe [den Leitfaden zur Bereitstellung auf Netlify](https://create-react-app.dev/docs/deployment/#netlify) in der Create-React-App-Dokumentation.
 
-- **Render:** See [“Deploy a Create React App Static Site”](https://render.com/docs/deploy-create-react-app) in the Render docs.
+- **Render:** Siehe [„Deploy a Create React App Static Site“](https://render.com/docs/deploy-create-react-app) in der Render-Dokumentation.
 
 <!-- tabs:end -->
 
 ## Heroku
-[Heroku](https://heroku.com) uses 2 different ways to determine the run command of a node application. It is possible to either:
+[Heroku](https://heroku.com) verwendet zwei verschiedene Arten, um den Startbefehl einer Node-Anwendung zu bestimmen. Es ist möglich, entweder:
 
-- Add a Procfile to the project root directory with the following line  
+- Eine Procfile im Projekt-Stammverzeichnis mit der folgenden Zeile hinzuzufügen:
   `web: node -r esm server.js`
 
-- Update the start script in the package.json to  
+- Das Start-Skript in der package.json zu aktualisieren auf:
   `"start": "node -r esm server.js"`
 
-On Heroku, a regular heroku/nodejs buildpack is necessary to build your app which is usually selected by default for node applications.  
+Auf Heroku ist ein reguläres heroku/nodejs Buildpack erforderlich, um deine App zu bauen, welches normalerweise standardmäßig für Node-Anwendungen ausgewählt wird.
 
-### Frontend and Backend
-In order to deploy a game to Heroku, the game has to be running on a single port. To do so, the [Server](/api/Server.md) has to handle both the API requests and serving the pages.  
-Below is an example of how to achieve that.
+### Frontend und Backend
+Um ein Spiel auf Heroku bereitzustellen, muss das Spiel auf einem einzigen Port laufen. Dazu muss der [Server](/api/Server.md) sowohl die API-Anfragen bearbeiten als auch die Seiten bereitstellen.
+Unten ist ein Beispiel, wie man das erreicht.
 
-First install these extra dependencies:
+Installiere zuerst diese zusätzlichen Abhängigkeiten:
 
 ```
 npm i koa-static
 ```
-Then adjust your `server.js` file like this:
+Passe dann deine `server.js`-Datei wie folgt an:
 
 ```js
 // server.js
@@ -112,7 +102,7 @@ import { TicTacToe } from './game';
 const server = Server({ games: [TicTacToe] });
 const PORT = process.env.PORT || 8000;
 
-// Build path relative to the server.js file
+// Build-Pfad relativ zur Datei server.js
 const frontEndAppBuildPath = path.resolve(__dirname, './build');
 server.app.use(serve(frontEndAppBuildPath))
 
@@ -126,7 +116,7 @@ server.run(PORT, () => {
 });
 ```
 
-The [Lobby](/api/Lobby.md) might be as follows:
+Die [Lobby](/api/Lobby.md) könnte wie folgt aussehen:
 
 ```jsx
 import React from 'react';
@@ -146,7 +136,7 @@ export default () => (
 );
 ```
 
-Or, without the lobby, pass the server address when calling `SocketIO`:
+Oder, ohne die Lobby, übergib die Server-Adresse beim Aufruf von `SocketIO`:
 
 ```js
 import { SocketIO } from 'boardgame.io/multiplayer';
@@ -160,8 +150,8 @@ const GameClient = Client({
 });
 ```
 
-### Backend Only
-If you only need to publish your backend to Heroku, your `server.js` can be simplified to this:
+### Nur Backend
+Wenn du nur dein Backend auf Heroku veröffentlichen musst, kann deine `server.js` wie folgt vereinfacht werden:
 
 ```js
 // server.js
@@ -175,14 +165,14 @@ const PORT = process.env.PORT || 8000;
 server.run(PORT);
 ```
 
-And your [Lobby](/api/Lobby.md) would now be pointing to your Heroku app URL:
+Und deine [Lobby](/api/Lobby.md) würde nun auf deine Heroku-App-URL zeigen:
 ```jsx
 import React from 'react';
 import { Lobby } from 'boardgame.io/react';
 import { TicTacToeBoard } from './board';
 import { TicTacToe } from './game';
 
-const server = `https://yourapplication.herokuapp.com`;
+const server = `https://deineanwendung.herokuapp.com`;
 const importedGames = [{ game: TicTacToe, board: TicTacToeBoard }];
 
 export default () => (
@@ -193,13 +183,13 @@ export default () => (
 );
 ```
 
-Or, without the lobby, pass the Heroku app URL when calling `SocketIO`:
+Oder, ohne die Lobby, übergib die Heroku-App-URL beim Aufruf von `SocketIO`:
 
 ```js
 import { SocketIO } from 'boardgame.io/multiplayer';
 
 const GameClient = Client({
   // ...
-  multiplayer: SocketIO({ server: 'https://yourapplication.herokuapp.com' }),
+  multiplayer: SocketIO({ server: 'https://deineanwendung.herokuapp.com' }),
 });
 ```

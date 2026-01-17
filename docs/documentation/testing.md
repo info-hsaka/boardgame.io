@@ -1,10 +1,8 @@
-# Testing Strategies
+# Teststrategien
 
-### Unit Tests
+### Unit-Tests
 
-Moves are just functions, so they lend themselves to unit testing.
-A useful strategy is to implement each move as a standalone function
-before passing them to the game object:
+Spielzüge (Moves) sind nur Funktionen, daher eignen sie sich gut für Unit-Tests. Eine nützliche Strategie besteht darin, jeden Spielzug als eigenständige Funktion zu implementieren, bevor er an das Spielobjekt übergeben wird:
 
 `Game.js`
 
@@ -24,32 +22,32 @@ export const TicTacToe = {
 ```js
 import { clickCell } from './Game';
 
-it('should place the correct value in the cell', () => {
-  // original state.
+it('sollte den richtigen Wert in die Zelle setzen', () => {
+  // ursprünglicher Zustand.
   const G = {
     cells: [null, null, null, null, null, null, null, null, null],
   };
 
-  // make move.
+  // Spielzug ausführen.
   clickCell({ G, playerID: '1' }, 3);
 
-  // verify new state.
+  // neuen Zustand überprüfen.
   expect(G).toEqual({
     cells: [null, null, null, '1', null, null, null, null, null],
   });
 });
 ```
 
-### Scenario Tests
+### Szenario-Tests
 
-Test your game logic in specific scenarios.
+Teste deine Spiellogik in spezifischen Szenarien.
 
 ```js
 import { Client } from 'boardgame.io/client';
 import { TicTacToe } from './Game';
 
-it('should declare player 1 as the winner', () => {
-  // set up a specific board scenario
+it('sollte Spieler 1 als Gewinner deklarieren', () => {
+  // ein spezifisches Brett-Szenario einrichten
   const TicTacToeCustomScenario = {
     ...TicTacToe,
     setup: () => ({
@@ -57,39 +55,34 @@ it('should declare player 1 as the winner', () => {
     }),
   };
 
-  // initialize the client with your custom scenario
+  // den Client mit deinem benutzerdefinierten Szenario initialisieren
   const client = Client({
     game: TicTacToeCustomScenario,
   });
 
-  // make some game moves
+  // einige Spielzüge ausführen
   client.moves.clickCell(8);
   client.moves.clickCell(5);
 
-  // get the latest game state
+  // den neuesten Spielzustand abrufen
   const { G, ctx } = client.getState();
 
-  // the board should look like this now
+  // das Brett sollte jetzt so aussehen
   expect(G.cells).toEqual(['0', '0', null, '1', '1', '1', null, null, '0']);
-  // player '1' should be declared the winner
+  // Spieler '1' sollte als Gewinner deklariert sein
   expect(ctx.gameover).toEqual({ winner: '1' });
 });
 ```
 
-?> Note that we imported the vanilla JavaScript client, not the
-one from `boardgame.io/react`.
+?> Beachte, dass wir den Vanilla-JavaScript-Client importiert haben, nicht den von `boardgame.io/react`.
 
-### Testing Randomness
+### Zufall testen
 
-If you are testing a move that uses the [Random API](/random), by definition
-you can’t always expect the same result, making it harder to test. In this
-case, you can use one of the following strategies.
+Wenn du einen Spielzug testest, der die [Random-API](/random) verwendet, kannst du definitionsgemäß nicht immer das gleiche Ergebnis erwarten, was das Testen erschwert. In diesem Fall kannst du eine der folgenden Strategien anwenden.
 
-#### Fixed PRNG seed
+#### Fester PRNG-Seed
 
-You can set `seed` in your game object. This will be used to initialise the
-Random API’s internal state and you’ll see a predictable sequence of results
-from calls to random API methods:
+Du kannst `seed` in deinem Spielobjekt festlegen. Dies wird verwendet, um den internen Zustand der Random-API zu initialisieren, und du wirst eine vorhersehbare Sequenz von Ergebnissen bei Aufrufen von Random-API-Methoden sehen:
 
 ```js
 import { Client } from 'boardgame.io/client';
@@ -102,9 +95,9 @@ const Game = {
   },
 };
 
-it('updates G.roll with a random number', () => {
+it('aktualisiert G.roll mit einer Zufallszahl', () => {
   const client = Client({
-      // Set seed so PRNG always starts in same state
+      // Seed setzen, damit PRNG immer im gleichen Zustand startet
     game: { ...Game, seed: 'fixed-seed' },
   });
   client.moves.rollDice();
@@ -113,26 +106,25 @@ it('updates G.roll with a random number', () => {
 });
 ```
 
-#### Override Random API <small>`since v0.49.10`</small>
+#### Random-API überschreiben <small>`seit v0.49.10`</small>
 
-If you need to test specific random outcomes, you can override the Random
-API entirely to allow complete control of the results of API methods.
+Wenn du spezifische Zufallsergebnisse testen musst, kannst du die Random-API vollständig überschreiben, um die volle Kontrolle über die Ergebnisse der API-Methoden zu haben.
 
 ```js
 import { Client } from 'boardgame.io/client';
 import { MockRandom } from 'boardgame.io/testing';
 
-// Create a mock of the random plugin, where the D6 method always returns 6.
-// Any methods you don’t provide an implementation for will behave as usual.
+// Erstelle einen Mock des Random-Plugins, bei dem die D6-Methode immer 6 zurückgibt.
+// Alle Methoden, für die du keine Implementierung angibst, verhalten sich wie gewohnt.
 const randomPlugin = MockRandom({
   D6: () => 6,
 });
 
-it ('rolls a six', () => {
+it ('würfelt eine Sechs', () => {
   const client = Client({
     game: {
       ...Game,
-      // Add the random plugin mock to the game’s plugins.
+      // Füge den Random-Plugin-Mock zu den Plugins des Spiels hinzu.
       plugins: [...(Game.plugins || []), randomPlugin]
     },
   });
@@ -142,13 +134,12 @@ it ('rolls a six', () => {
 });
 ```
 
-### Multiplayer Tests
+### Multiplayer-Tests
 
-Use the local multiplayer mode to simulate multiplayer interactions
-in unit tests.
+Verwende den lokalen Multiplayer-Modus, um Multiplayer-Interaktionen in Unit-Tests zu simulieren.
 
 ```js
-it('multiplayer test', () => {
+it('Multiplayer-Test', () => {
   const spec = {
     game: MyGame,
     multiplayer: Local(),
@@ -163,7 +154,7 @@ it('multiplayer test', () => {
   p0.moves.moveA();
   p0.events.endTurn();
 
-  // Player 1's state reflects the moves made by Player 0.
+  // Der Zustand von Spieler 1 spiegelt die von Spieler 0 gemachten Züge wider.
   expect(p1.getState()).toEqual(...);
 
   p1.moves.moveA();
@@ -173,13 +164,11 @@ it('multiplayer test', () => {
 });
 ```
 
-### Integration Tests
+### Integrationstests
 
-Test the application end-to-end from the UI layer's point of view.
+Teste die Anwendung durchgängig aus der Sicht der UI-Ebene.
 
-In this case we use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-to mount our React component and look for the TicTacToe board inside of it.
-We then check the board is rendered and responds to user interaction as expected.
+In diesem Fall verwenden wir die [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/), um unsere React-Komponente zu mounten und nach dem TicTacToe-Brett darin zu suchen. Wir prüfen dann, ob das Brett gerendert wird und wie erwartet auf Benutzerinteraktionen reagiert.
 
 ```js
 import React from 'react';
@@ -191,14 +180,14 @@ describe('Tic-Tac-Toe', () => {
   const { container } = render(<App />);
   const cells = container.querySelectorAll('td');
   
-  test('board is empty initially', () => {
+  test('Brett ist anfangs leer', () => {
     expect(cells).toHaveLength(9);
     for (const cell of cells) {
       expect(cell).toBeEmptyDOMElement();
     }
   });
   
-  test('clicking a cell places player 0’s marker', () => {
+  test('Klicken auf eine Zelle setzt die Markierung von Spieler 0', () => {
     fireEvent.click(cells[5]);
     expect(cells[5]).toHaveTextContent('0');
   });

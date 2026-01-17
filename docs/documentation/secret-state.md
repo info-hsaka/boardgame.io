@@ -1,23 +1,14 @@
-# Secret State
+# Geheimer Zustand (Secret State)
 
-In some games you might need to hide information from
-players or spectators. For example, you might not want to reveal the
-hands of opponents in card games.
+In einigen Spielen kann es notwendig sein, Informationen vor Spielern oder Zuschauern zu verbergen. Zum Beispiel möchtest du in Kartenspielen vielleicht nicht die Karten der Gegner preisgeben.
 
-This is easily accomplished at the UI layer (by not
-rendering secret information), but the framework also
-provides support for not even sending such data to
-the client.
+Dies lässt sich leicht auf der UI-Ebene umsetzen (indem geheime Informationen nicht gerendert werden), aber das Framework bietet auch Unterstützung dafür, solche Daten erst gar nicht an den Client zu senden.
 
-In order to do this, use the `playerView` setting in
-the game object. It accepts a function that receives an
-object containing `G`, `ctx`, and `playerID`, and returns a version of `G`
-that is stripped of any information that should be hidden
-from that specific player.
+Verwende dazu die Einstellung `playerView` im Spielobjekt. Sie akzeptiert eine Funktion, die ein Objekt mit `G`, `ctx` und `playerID` erhält und eine Version von `G` zurückgibt, die von allen Informationen befreit ist, die vor diesem speziellen Spieler verborgen werden sollen.
 
 ```js
 const game = {
-  // `playerID` could also be null or undefined for spectators.
+  // `playerID` kann für Zuschauer auch null oder undefined sein.
   playerView: ({ G, ctx, playerID }) => {
     return StripSecrets(G, playerID);
   },
@@ -25,17 +16,14 @@ const game = {
 };
 ```
 
-!> Make sure that you associate the game clients with individual
-players (as discussed in the [Multiplayer](multiplayer.md) section).
+!> Stelle sicher, dass du die Spielclients den einzelnen Spielern zuordnest (wie im Abschnitt [Multiplayer](multiplayer.md) besprochen).
 
 ### PlayerView.STRIP_SECRETS
 
-The framework comes bundled with an implementation of `playerView`
-that does the following:
+Das Framework wird mit einer Implementierung von `playerView` ausgeliefert, die Folgendes tut:
 
-- It removes a key named `secret` from `G`.
-- If `G` contains a `players` object, it removes all keys except
-  for the one that matches `playerID`.
+- Sie entfernt einen Schlüssel namens `secret` aus `G`.
+- Wenn `G` ein `players`-Objekt enthält, entfernt sie alle Schlüssel außer demjenigen, der mit der `playerID` übereinstimmt.
 
 ```js
 G: {
@@ -49,7 +37,7 @@ G: {
 }
 ```
 
-becomes the following for player `1`:
+wird für Spieler `1` zu Folgendem:
 
 ```js
 G: {
@@ -59,7 +47,7 @@ G: {
 }
 ```
 
-Usage:
+Verwendung:
 
 ```js
 import { PlayerView } from 'boardgame.io/core';
@@ -70,11 +58,9 @@ const game = {
 };
 ```
 
-### Disabling moves that manipulate secret state on the client
+### Deaktivieren von Spielzügen, die den geheimen Zustand auf dem Client manipulieren
 
-Moves that manipulate secret state often cannot run on the client because
-the client doesn't have all the necessary data to process such moves.
-These can be marked as server-only by setting `client: false` on move:
+Spielzüge, die den geheimen Zustand manipulieren, können oft nicht auf dem Client ausgeführt werden, da der Client nicht über alle notwendigen Daten verfügt, um solche Züge zu verarbeiten. Diese können als reine Server-Spielzüge markiert werden, indem `client: false` für den Spielzug gesetzt wird:
 
 ```js
 moves: {

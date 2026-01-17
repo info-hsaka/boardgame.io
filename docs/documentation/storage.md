@@ -1,21 +1,18 @@
-# Storage
+# Speicherung (Storage)
 
-**boardgame.io** is storage agnostic. Various adapters are
-available that allow you to persist your game state in
-different storage systems.
+**boardgame.io** ist unabhängig von der Art der Speicherung. Es stehen verschiedene Adapter zur Verfügung, mit denen du deinen Spielzustand in unterschiedlichen Speichersystemen sichern kannst.
 
-You can even write your [own adapter](/storage?id=writing-a-custom-adapter)
-for a custom backend.
+Du kannst sogar deinen [eigenen Adapter](/storage?id=writing-a-custom-adapter) für ein benutzerdefiniertes Backend schreiben.
 
 ### Flatfile
 
-First, install the necessary packages:
+Installiere zuerst die notwendigen Pakete:
 
 ```
 npm install node-persist
 ```
 
-Then modify your server spec to indicate that you want to connect to a flatfile database:
+Ändere dann deine Server-Spezifikation, um anzugeben, dass du dich mit einer Flatfile-Datenbank verbinden möchtest:
 
 ```js
 const { Server, FlatFile } = require('boardgame.io/server');
@@ -27,39 +24,35 @@ const server = Server({
   db: new FlatFile({
     dir: '/storage/directory',
     logging: (true/false),
-    ttl: (optional, see node-persist docs),
+    ttl: (optional, siehe node-persist Dokumentation),
   }),
 });
 
 server.run(8000);
 ```
 
-### Other backends
+### Andere Backends
 
 #### Firebase
 
-Instructions at https://github.com/delucis/bgio-firebase.
+Anleitungen unter https://github.com/delucis/bgio-firebase.
 
 #### Azure Storage
 
-Instructions at https://github.com/c-w/bgio-azure-storage.
+Anleitungen unter https://github.com/c-w/bgio-azure-storage.
 
 #### Postgres
 
-Instructions at https://github.com/janKir/bgio-postgres.
+Anleitungen unter https://github.com/janKir/bgio-postgres.
 
 #### MongoDB
 
-Coming soon (used to be supported but is not in sync with the
-latest release).
+In Kürze verfügbar (wurde früher unterstützt, ist aber nicht synchron mit der neuesten Version).
 
 ### Caching
 
-Depending on your set-up, you may want the server to cache some of the data,
-reducing the load on your database and speeding up server responses.
-[@boardgame.io/storage-cache](https://github.com/boardgameio/storage-cache) offers
-a basic caching model compatible with any boardgame.io database connector.
+Abhängig von deinem Setup möchtest du vielleicht, dass der Server einige Daten zwischenspeichert, um die Last auf deine Datenbank zu verringern und die Serverantworten zu beschleunigen. [@boardgame.io/storage-cache](https://github.com/boardgameio/storage-cache) bietet ein einfaches Caching-Modell, das mit jedem boardgame.io-Datenbank-Connector kompatibel ist.
 
-### Writing a Custom Adapter
+### Einen benutzerdefinierten Adapter schreiben
 
-Create a class that implements the [StorageAPI.Async](https://github.com/boardgameio/boardgame.io/blob/main/src/server/db/base.ts) interface.
+Erstelle eine Klasse, die die Schnittstelle [StorageAPI.Async](https://github.com/boardgameio/boardgame.io/blob/main/src/server/db/base.ts) implementiert.

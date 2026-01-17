@@ -1,14 +1,10 @@
-# Debugging
+# Fehlersuche (Debugging)
 
-### Using the Debug Panel in production
+### Verwendung des Debug Panels in der Produktion
 
-boardgame.io comes bundled with a debug panel that lets you
-interact with your game and game clients. When you build your app
-for production (i.e. when `NODE_ENV === 'production'`) this is stripped
-out from the final bundle.
+boardgame.io wird mit einem Debug Panel ausgeliefert, mit dem du mit deinem Spiel und den Spielclients interagieren kannst. Wenn du deine App für die Produktion erstellst (d. h. wenn `NODE_ENV === 'production'`), wird dieses aus dem finalen Bundle entfernt.
 
-If you want to include the debug panel in a production build you can
-do so explicitly when creating your client:
+Wenn du das Debug Panel explizit in einen Produktions-Build aufnehmen möchtest, kannst du dies beim Erstellen deines Clients tun:
 
 ```js
 import { Debug } from 'boardgame.io/debug';
@@ -19,9 +15,9 @@ const client = Client({
 });
 ```
 
-### Debug Panel options
+### Optionen für das Debug Panel
 
-You can use the `collapseOnLoad` option to hide the panel by default when the client loads. The `hideToggleButton` option removes the toggle button on the side of the panel which means you can only use the keyboard shortcut to toggle its visibility.
+Du kannst die Option `collapseOnLoad` verwenden, um das Panel standardmäßig auszublenden, wenn der Client geladen wird. Die Option `hideToggleButton` entfernt die Umschaltfläche an der Seite des Panels, was bedeutet, dass du nur noch das Tastaturkürzel verwenden kannst, um die Sichtbarkeit umzuschalten.
 
 ```js
 const client = Client({
@@ -34,26 +30,21 @@ const client = Client({
 });
 ```
 
-### Custom metadata in game logs
+### Benutzerdefinierte Metadaten in Spielprotokollen
 
-It can sometimes be helpful to surface some metadata during a move.
-You can do this by using the log plugin. For example,
+Manchmal kann es hilfreich sein, während eines Spielzugs Metadaten anzuzeigen. Dies kannst du mit dem Log-Plugin tun. Zum Beispiel:
 
 ```js
 const move = ({ log }) => {
-  log.setMetadata('metadata for this move');
+  log.setMetadata('Metadaten für diesen Spielzug');
 };
 ```
 
-This metadata is stored in the `log` client property and displayed
-in the Log section of the debug panel.
+Diese Metadaten werden in der Client-Eigenschaft `log` gespeichert und im Log-Bereich des Debug Panels angezeigt.
 
 ### Redux
 
-The framework uses Redux under the hood.
-You may sometimes want to debug this Redux store directly.
-In order to do so, you can pass along a Redux store enhancer
-with your client. For example,
+Das Framework verwendet intern Redux. Manchmal möchtest du diesen Redux-Store vielleicht direkt debuggen. Dazu kannst du deinem Client einen Redux-Store-Enhancer übergeben. Zum Beispiel:
 
 ```js
 import logger from 'redux-logger';
@@ -65,7 +56,7 @@ Client({
 });
 ```
 
-Doing so will `console.log` on state changes. This can also hook into the [Chrome Redux DevTools](http://extension.remotedev.io/) browser extension like this:
+Dadurch werden Zustandsänderungen per `console.log` protokolliert. Dies kann auch mit der Browser-Erweiterung [Chrome Redux DevTools](http://extension.remotedev.io/) wie folgt verknüpft werden:
 
 ```js
 Client({
@@ -77,7 +68,7 @@ Client({
 })
 ```
 
-or both
+oder beides:
 
 ```js
 import logger from 'redux-logger';
@@ -94,12 +85,10 @@ Client({
 
 ### Server + Sockets
 
-The Koa-server can be debugged by setting the `DEBUG` environment variable before starting it.
-This will give you access to logs of incoming requests as well as the socket.io logs.
-To set the environment variable prepend your npm script to run the server like so:
+Der Koa-Server kann debuggt werden, indem die Umgebungsvariable `DEBUG` vor dem Start gesetzt wird. Dies gibt dir Zugriff auf Protokolle der eingehenden Anfragen sowie auf die socket.io-Protokolle. Um die Umgebungsvariable zu setzen, stelle sie deinem npm-Skript zum Ausführen des Servers wie folgt voran:
 
 ```
 DEBUG=* node server.js
 ```
 
-> NOTE: For various debugging scopes have a look at the [socket.io-docs](https://socket.io/docs/v4/logging-and-debugging/#available-debugging-scopes)
+> HINWEIS: Für verschiedene Debugging-Bereiche wirf einen Blick in die [socket.io-Dokumentation](https://socket.io/docs/v4/logging-and-debugging/#available-debugging-scopes)

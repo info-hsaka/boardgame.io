@@ -1,32 +1,32 @@
 # Chat
 
-The boardgame.io client provides a basic API for sending chat messages between players in a match using the [multiplayer server](multiplayer?id=remote-master).
+Der boardgame.io-Client bietet eine einfache API zum Senden von Chat-Nachrichten zwischen Spielern in einem Match unter Verwendung des [Multiplayer-Servers](multiplayer?id=remote-master).
 
-The [plain JS client](api/Client?id=properties) and the [React client](api/Client?id=board-props) (via board props) both provide the following properties:
+Sowohl der [Plain-JS-Client](api/Client?id=properties) als auch der [React-Client](api/Client?id=board-props) (über Board-Props) bieten die folgenden Eigenschaften:
 
-- `sendChatMessage(message)`: Function that sends a chat message to other players. The message argument can be a string or you can send objects to include more metadata. For example, you might decide to include a timestamp along with message text:
+- `sendChatMessage(message)`: Funktion, die eine Chat-Nachricht an andere Spieler sendet. Das Argument `message` kann ein String sein, oder du kannst Objekte senden, um mehr Metadaten einzuschließen. Zum Beispiel könntest du entscheiden, einen Zeitstempel zusammen mit dem Nachrichtentext einzuschließen:
 
     ```js
-    sendChatMessage({ message: 'Hello', time: Date.now() });
+    sendChatMessage({ message: 'Hallo', time: Date.now() });
     ```
 
-- `chatMessages`: An array containing chat messages this client has received. Each message is an object with the following properties:
+- `chatMessages`: Ein Array mit Chat-Nachrichten, die dieser Client empfangen hat. Jede Nachricht ist ein Objekt mit den folgenden Eigenschaften:
 
-    - `id`: a unique message ID string
-    - `sender`: the `playerID` of the message’s sender
-    - `payload`: the value of the `message` argument passed to `sendChatMessage`
+    - `id`: ein eindeutiger Nachrichten-ID-String
+    - `sender`: die `playerID` des Absenders der Nachricht
+    - `payload`: der Wert des an `sendChatMessage` übergebenen `message`-Arguments
 
-  Example `chatMessages` array:
+  Beispiel für ein `chatMessages`-Array:
 
   ```js
   [
-      { id: 'foo', sender: '0', payload: 'Ready to play?' },
-      { id: 'bar', sender: '1', payload: 'Let’s go!' },
+      { id: 'foo', sender: '0', payload: 'Bereit zu spielen?' },
+      { id: 'bar', sender: '1', payload: 'Los geht’s!' },
   ]
   ```
 
-### Notes
+### Hinweise
 
-- **Chat messages are ephemeral and are not stored by the boardgame.io server.** A client only receives messages sent while it is connected to the server. If messages are sent amongst players before another player has connected, the new player will not receive those prior messages. Similarly, if the page is refreshed, any previously received messages will be lost.
+- **Chat-Nachrichten sind flüchtig und werden nicht vom boardgame.io-Server gespeichert.** Ein Client empfängt nur Nachrichten, die gesendet werden, während er mit dem Server verbunden ist. Wenn Nachrichten unter den Spielern gesendet werden, bevor ein anderer Spieler sich verbunden hat, wird der neue Spieler diese vorherigen Nachrichten nicht empfangen. Ebenso gehen bei einer Aktualisierung der Seite alle zuvor empfangenen Nachrichten verloren.
 
-- **Only players can send chat messages.** Assuming the match is authenticated via [the Lobby server](api/Lobby), only players are permitted to send messages, which are authenticated using the same logic as other game actions. Spectator clients can receive and view chat messages, but not send messages of their own.
+- **Nur Spieler können Chat-Nachrichten senden.** Unter der Annahme, dass das Match über [den Lobby-Server](api/Lobby) authentifiziert ist, dürfen nur Spieler Nachrichten senden, die mit der gleichen Logik wie andere Spielaktionen authentifiziert werden. Zuschauer-Clients können Chat-Nachrichten empfangen und ansehen, aber keine eigenen Nachrichten senden.

@@ -1,15 +1,15 @@
-# Concepts
+# Konzepte
 
-### State
+### Zustand
 
-boardgame.io captures game state in two objects: `G` and `ctx`.
+boardgame.io erfasst den Spielzustand in zwei Objekten: `G` und `ctx`.
 
 ```js
 {
-  // The game state (managed by you).
+  // Der Spielzustand (von dir verwaltet).
   G: {},
 
-  // Read-only metadata (managed by the framework).
+  // Schreibgeschützte Metadaten (vom Framework verwaltet).
   ctx: {
     turn: 0,
     currentPlayer: '0',
@@ -18,26 +18,26 @@ boardgame.io captures game state in two objects: `G` and `ctx`.
 }
 ```
 
-These state objects are passed around everywhere and maintained
-on both client and server seamlessly. The state in `ctx` is
-incrementally adoptable, meaning that you can manage all the
-state manually in `G` if you so desire.
+Diese Zustandsobjekte werden überall weitergereicht und nahtlos
+sowohl auf dem Client als auch auf dem Server gepflegt. Der Zustand in `ctx` ist
+inkrementell adaptierbar, was bedeutet, dass du den gesamten
+Zustand manuell in `G` verwalten kannst, wenn du dies wünschst.
 
-?> `ctx` contains other fields not shown here that games
-can take advantage of, including support for game phases and complex
-turn orders.
+?> `ctx` enthält weitere Felder, die hier nicht gezeigt werden und die Spiele
+nutzen können, einschließlich der Unterstützung für Spielphasen und komplexe
+Zugreihenfolgen.
 
-!> Because state can be sent between client and server,
-`G` must be a JSON-serializable object; in particular, it must
-not contain classes or functions.
+!> Da der Zustand zwischen Client und Server gesendet werden kann,
+muss `G` ein JSON-serialisierbares Objekt sein; insbesondere darf es
+keine Klassen oder Funktionen enthalten.
 
-### Moves
+### Spielzüge (Moves)
 
-These are functions that tell the framework how to change `G`
-when a particular game move is made. They must not depend on
-external state or have any side-effects (except modifying `G`).
-See the guide on [Immutability](immutability.md) for how
-immutability is handled by the framework.
+Dies sind Funktionen, die dem Framework mitteilen, wie `G` geändert werden soll,
+wenn ein bestimmter Spielzug ausgeführt wird. Sie dürfen nicht von
+externem Zustand abhängen oder Nebenwirkungen haben (außer der Änderung von `G`).
+Siehe den Leitfaden zur [Immutabilität](immutability.md) für Informationen darüber,
+wie Unveränderlichkeit vom Framework gehandhabt wird.
 
 ```js
 moves: {
@@ -50,13 +50,13 @@ moves: {
 }
 ```
 
-On the client, you use a `moves` object to dispatch your
-move functions.
+Auf dem Client verwendest du ein `moves`-Objekt, um deine
+Spielzug-Funktionen aufzurufen.
 
 <!-- tabs:start -->
 #### **Plain JS**
 
-You can access `moves` from an instance of the plain JavaScript client:
+Du kannst auf `moves` über eine Instanz des Plain-JavaScript-Clients zugreifen:
 
 ```js
 client.moves.drawCard();
@@ -64,7 +64,7 @@ client.moves.drawCard();
 
 #### **React**
 
-Using React, `moves` is provided through your component’s `props`:
+In React wird `moves` über die `props` deiner Komponente bereitgestellt:
 
 ```js
 props.moves.drawCard();
@@ -72,11 +72,11 @@ props.moves.drawCard();
 
 <!-- tabs:end -->
 
-### Events
+### Ereignisse (Events)
 
-These are framework-provided functions that are analogous to moves, except that they work on `ctx`. These typically advance the game state by doing things like
-ending the turn, changing the game phase etc.
-Events are dispatched from the client in a similar way to moves.
+Dies sind vom Framework bereitgestellte Funktionen, die analog zu Spielzügen sind, außer dass sie auf `ctx` wirken. Diese bringen den Spielzustand typischerweise voran, indem sie Dinge tun wie
+den Zug beenden, die Spielphase ändern usw.
+Ereignisse werden vom Client auf ähnliche Weise wie Spielzüge ausgelöst.
 
 <!-- tabs:start -->
 #### **Plain JS**
@@ -90,30 +90,29 @@ props.events.endTurn();
 ```
 <!-- tabs:end -->
 
-For more details, see the guide on [Events](events.md).
+Weitere Details findest du im Leitfaden zu [Ereignissen](events.md).
 
 ### Phase
 
-A phase is a period in the game that overrides the game
-configuration while it is active. For example, you can use
-a different set of moves or a different turn order during
-a phase. The game can transition between different phases, and turns
-occur inside phases. See the guide on [Phases](phases.md) for more details.
+Eine Phase ist ein Zeitraum im Spiel, der die Spielkonfiguration
+überschreibt, während sie aktiv ist. Zum Beispiel kannst du während
+einer Phase einen anderen Satz von Spielzügen oder eine andere Zugreihenfolge verwenden. Das Spiel kann zwischen verschiedenen Phasen wechseln, und Züge
+finden innerhalb von Phasen statt. Siehe den Leitfaden zu [Phasen](phases.md) für weitere Details.
 
-### Turn
+### Zug (Turn)
 
-A turn is a period of the game that is associated with an individual
-player. It typically consists of one or more moves made by
-that player before it passes on to another player. You can
-also allow other players to play during your turn, although
-this is less common. See the guide on
-[Turn Orders](turn-order.md) for more details.
+Ein Zug ist ein Zeitraum des Spiels, der einem einzelnen
+Spieler zugeordnet ist. Er besteht typischerweise aus einem oder mehreren Spielzügen, die von
+diesem Spieler ausgeführt werden, bevor er an einen anderen Spieler weitergegeben wird. Du kannst
+auch anderen Spielern erlauben, während deines Zuges zu spielen, obwohl
+dies weniger üblich ist. Siehe den Leitfaden zur
+[Zugreihenfolge](turn-order.md) für weitere Details.
 
-### Stage
+### Etappe (Stage)
 
-A stage is similar to a phase, except that it happens within a turn, and
-applies to individual players rather than the game as a whole.
-A turn may be subdivided into many stages, each allowing a different set of moves
-and overriding other game configuration options while that stage is active.
-Also, different players can be in different stages during a turn.
-See the guide on [Stages](stages.md) for more details.
+Eine Etappe (Stage) ist ähnlich wie eine Phase, außer dass sie innerhalb eines Zuges stattfindet und
+für einzelne Spieler gilt und nicht für das Spiel als Ganzes.
+Ein Zug kann in viele Etappen unterteilt sein, von denen jede einen anderen Satz von Spielzügen erlaubt
+und andere Spielkonfigurationsoptionen überschreibt, während diese Etappe aktiv ist.
+Außerdem können sich verschiedene Spieler während eines Zuges in unterschiedlichen Etappen befinden.
+Siehe den Leitfaden zu [Etappen](stages.md) für weitere Details.

@@ -14,32 +14,31 @@
 </p>
 
 <p align="center">
-  <strong><a href="https://boardgame.io/documentation/#/">Read the Documentation</a></strong>
+  <strong><a href="https://boardgame.io/documentation/#/">Dokumentation lesen</a></strong>
 </p>
 
 <p align="center">
-  <strong>boardgame.io</strong> is an engine for creating turn-based games using JavaScript.
+  <strong>boardgame.io</strong> ist eine Engine zur Erstellung von rundenbasierten Spielen mit JavaScript.
 </p>
 
-Write simple functions that describe how the game state changes
-when a particular move is made. This is automatically converted
-into a playable game complete with online multiplayer
-features, all without requiring you to write a single line of
-networking or storage code.
+Schreibe einfache Funktionen, die beschreiben, wie sich der Spielzustand ändert,
+wenn ein bestimmter Spielzug ausgeführt wird. Dies wird automatisch
+in ein spielbares Spiel umgewandelt, komplett mit Online-Multiplayer-Funktionen,
+ohne dass du eine einzige Zeile Netzwerk- oder Speicher-Code schreiben musst.
 
-### Features
+### Funktionen
 
-- **State Management**: Game state is managed seamlessly across clients, server and storage automatically.
-- **Multiplayer**: Game state is kept in sync in realtime and across platforms.
-- **AI**: Automatically generated bots that can play your game.
-- **Game Phases**: with different game rules and turn orders per phase.
-- **Lobby**: Player matchmaking and game creation.
-- **Prototyping**: Interface to simulate moves even before you render the game.
-- **Extendable**: Plugin system that allows creating new abstractions.
-- **View-layer Agnostic**: Use the vanilla JS client or the bindings for React / React Native.
-- **Logs**: Game logs with the ability to time travel (viewing the board at an earlier state).
+- **Zustandsverwaltung**: Der Spielzustand wird nahtlos und automatisch zwischen Clients, Server und Speicher verwaltet.
+- **Multiplayer**: Der Spielzustand wird in Echtzeit und plattformübergreifend synchron gehalten.
+- **KI**: Automatisch generierte Bots, die dein Spiel spielen können.
+- **Spielphasen**: mit verschiedenen Spielregeln und Zugreihenfolgen pro Phase.
+- **Lobby**: Spielersuche und Spielerstellung.
+- **Prototyping**: Interface zur Simulation von Spielzügen, noch bevor das Spiel gerendert wird.
+- **Erweiterbar**: Plugin-System, das neue Abstraktionen ermöglicht.
+- **Unabhängig von der View-Ebene**: Verwende den Vanilla-JS-Client oder die Bindungen für React / React Native.
+- **Protokolle**: Spielprotokolle mit der Möglichkeit der Zeitreise (Betrachtung des Spielbretts in einem früheren Zustand).
 
-## Usage
+## Verwendung
 
 ### Installation
 
@@ -47,48 +46,48 @@ networking or storage code.
 npm install boardgame.io
 ```
 
-### Documentation
+### Dokumentation
 
-Read our [Full Documentation](https://boardgame.io/documentation/) to learn how to
-use boardgame.io, and join the [community on gitter](https://gitter.im/boardgame-io/General)
-to ask your questions!
+Lies unsere [vollständige Dokumentation](https://boardgame.io/documentation/), um zu lernen, wie man
+boardgame.io benutzt, und tritt der [Community auf Gitter](https://gitter.im/boardgame-io/General) bei,
+um deine Fragen zu stellen!
 
-### Running examples in this repository
+### Beispiele in diesem Repository ausführen
 
 ```sh
 npm install
 npm start
 ```
 
-The examples can be found in the [examples](examples/) folder.
+Die Beispiele befinden sich im Ordner [examples](examples/).
 
-#### Using VS Code?
+#### Benutzt du VS Code?
 
-This repository is ready to run in a dev container in VS Code. See [the contributing guidelines for details](CONTRIBUTING.md).
+Dieses Repository ist bereit, in einem Dev-Container in VS Code ausgeführt zu werden. Siehe [die Richtlinien für Mitwirkende für Details](CONTRIBUTING.md).
 
 ## Changelog
 
-See [changelog](docs/documentation/CHANGELOG.md).
+Siehe [Changelog](docs/documentation/CHANGELOG.md).
 
-## Get involved
+## Mitmachen
 
-We welcome contributions of all kinds!
-Please take a moment to review our [Code of Conduct](CODE_OF_CONDUCT.md).
+Wir freuen uns über Beiträge aller Art!
+Bitte nimm dir einen Moment Zeit, um unseren [Verhaltenskodex](CODE_OF_CONDUCT.md) zu lesen.
 
-🐛 **Found a bug?**  
-Let us know by [creating an issue][new-issue].
+🐛 **Einen Bug gefunden?**  
+Lass es uns wissen, indem du ein [Issue erstellst][new-issue].
 
-❓ **Have a question?**  
-Our [Gitter channel][gitter] and [GitHub Discussions][discussions]
-are good places to start.
+❓ **Hast du eine Frage?**  
+Unser [Gitter-Kanal][gitter] und die [GitHub Discussions][discussions]
+sind gute Anlaufstellen.
 
-⚙️ **Interested in fixing a [bug][bugs] or adding a [feature][features]?**  
-Check out the [contributing guidelines](CONTRIBUTING.md)
-and the [project roadmap](roadmap.md).
+⚙️ **Interessiert daran, einen [Bug][bugs] zu beheben oder eine [Funktion][features] hinzuzufügen?**  
+Schau dir die [Richtlinien für Mitwirkende](CONTRIBUTING.md)
+und die [Projekt-Roadmap](roadmap.md) an.
 
-📖 **Can we improve [our documentation][docs]?**  
-Pull requests even for small changes can be helpful. Each page in the
-docs can be edited by clicking the “Edit on GitHub” link at the top right.
+📖 **Können wir [unsere Dokumentation][docs] verbessern?**  
+Pull-Requests, auch für kleine Änderungen, können hilfreich sein. Jede Seite in der
+Dokumentation kann durch Klicken auf den Link „Edit on GitHub“ oben rechts bearbeitet werden.
 
 [new-issue]: https://github.com/boardgameio/boardgame.io/issues/new/choose
 [gitter]: https://gitter.im/boardgame-io/General
@@ -99,6 +98,6 @@ docs can be edited by clicking the “Edit on GitHub” link at the top right.
 [sponsors]: https://github.com/sponsors/boardgameio
 [collective]: https://opencollective.com/boardgameio#support
 
-## License
+## Lizenz
 
 [MIT](LICENSE)

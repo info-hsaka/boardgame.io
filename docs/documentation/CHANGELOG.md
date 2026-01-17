@@ -1,104 +1,104 @@
 ### v0.50.2
 
-This release includes dependency upgrades only.
+Dieses Release enthält nur Aktualisierungen von Abhängigkeiten.
 
 ### v0.50.1
 
-This release fixes compatibility with React v18. Thanks [@mbrinkl](https://github.com/mbrinkl)!
+Dieses Release behebt die Kompatibilität mit React v18. Danke [@mbrinkl](https://github.com/mbrinkl)!
 
 #### Bugfixes
 
-* [[2afffb13](https://github.com/boardgameio/boardgame.io/commit/2afffb13)] Fix React 18 compatibility ([#1104](https://github.com/boardgameio/boardgame.io/pull/1104))
-* [[74722165](https://github.com/boardgameio/boardgame.io/commit/74722165)] Use correct CSS margin syntax in debug panel
+* [[2afffb13](https://github.com/boardgameio/boardgame.io/commit/2afffb13)] Fix React 18 Kompatibilität ([#1104](https://github.com/boardgameio/boardgame.io/pull/1104))
+* [[74722165](https://github.com/boardgameio/boardgame.io/commit/74722165)] Korrekte CSS-Margin-Syntax im Debug Panel verwenden
 
 
 ## v0.50.0
 
-This release includes a large refactor in boardgame.io API. Callbacks that used to be `(G, ctx) => {}` now becomes `({ G, ctx }) => {}` ... Thanks [@delucis](https://github.com/delucis) for the great contribution!
+Dieses Release enthält ein großes Refactoring der boardgame.io-API. Callbacks, die früher `(G, ctx) => {}` waren, werden nun zu `({ G, ctx }) => {}` ... Danke [@delucis](https://github.com/delucis) für den großartigen Beitrag!
 
 ### Features
 
-* [[da1ccb1](https://github.com/boardgameio/boardgame.io/commit/da1ccb18819fa265144da075a445e003d8a2fcc8)] feat: Change move and hook signature ([#891](https://github.com/boardgameio/boardgame.io/pull/891))
+* [[da1ccb1](https://github.com/boardgameio/boardgame.io/commit/da1ccb18819fa265144da075a445e003d8a2fcc8)] feat: Signatur von Spielzügen (Moves) und Hooks geändert ([#891](https://github.com/boardgameio/boardgame.io/pull/891))
 
 ### v0.49.13
 
 ### Features
 
-* [[aa99a9c](https://github.com/boardgameio/boardgame.io/commit/aa99a9cce28012cb747fa6db8b3f8ad73c28be0a)] feat: Conditional log redacting in long form move ([#1089](https://github.com/boardgameio/boardgame.io/pull/1089))
-* [[4bf203c](https://github.com/boardgameio/boardgame.io/commit/4bf203c1c1ec42e3193935a39e4cfb54a5658627)] TypeScript: AiEnumerate return type ([#1080](https://github.com/boardgameio/boardgame.io/pull/1080))
+* [[aa99a9c](https://github.com/boardgameio/boardgame.io/commit/aa99a9cce28012cb747fa6db8b3f8ad73c28be0a)] feat: Bedingte Protokoll-Schwärzung (Redacting) in ausführlichen Spielzügen ([#1089](https://github.com/boardgameio/boardgame.io/pull/1089))
+* [[4bf203c](https://github.com/boardgameio/boardgame.io/commit/4bf203c1c1ec42e3193935a39e4cfb54a5658627)] TypeScript: Rückgabetyp für AiEnumerate ([#1080](https://github.com/boardgameio/boardgame.io/pull/1080))
 
 ### v0.49.12
 
 #### Bugfixes
 
-* [[96b26bb9](https://github.com/boardgameio/boardgame.io/commit/96b26bb9)] lobby: block creation of matches with invalid player counts ([#1060](https://github.com/boardgameio/boardgame.io/pull/1060))
-* [[453f530c](https://github.com/boardgameio/boardgame.io/commit/453f530c)] types: Use correct socket.io options typing
-* [[3692199](https://github.com/boardgameio/boardgame.io/commit/3692199), [1e57a9c](https://github.com/boardgameio/boardgame.io/commit/1e57a9c)] Update dependencies: socket.io and koa-body
+* [[96b26bb9](https://github.com/boardgameio/boardgame.io/commit/96b26bb9)] lobby: Erstellung von Partien mit ungültiger Spieleranzahl blockieren ([#1060](https://github.com/boardgameio/boardgame.io/pull/1060))
+* [[453f530c](https://github.com/boardgameio/boardgame.io/commit/453f530c)] types: Korrekte Typisierung für socket.io-Optionen verwenden
+* [[3692199](https://github.com/boardgameio/boardgame.io/commit/3692199), [1e57a9c](https://github.com/boardgameio/boardgame.io/commit/1e57a9c)] Abhängigkeiten aktualisiert: socket.io und koa-body
 
 
 ### v0.49.11
 
 #### Bugfixes
 
-* [[453f530c](https://github.com/boardgameio/boardgame.io/commit/453f530c)] types: Use correct socket.io options typing
-* [[7e55d118](https://github.com/boardgameio/boardgame.io/commit/7e55d118), [75428111](https://github.com/boardgameio/boardgame.io/commit/75428111), [4fa2c4f1](https://github.com/boardgameio/boardgame.io/commit/4fa2c4f1), [52450607](https://github.com/boardgameio/boardgame.io/commit/52450607)] Update dependencies: engine.io, nanoid, ajv, and node-fetch
+* [[453f530c](https://github.com/boardgameio/boardgame.io/commit/453f530c)] types: Korrekte Typisierung für socket.io-Optionen verwenden
+* [[7e55d118](https://github.com/boardgameio/boardgame.io/commit/7e55d118), [75428111](https://github.com/boardgameio/boardgame.io/commit/75428111), [4fa2c4f1](https://github.com/boardgameio/boardgame.io/commit/4fa2c4f1), [52450607](https://github.com/boardgameio/boardgame.io/commit/52450607)] Abhängigkeiten aktualisiert: engine.io, nanoid, ajv und node-fetch
 
 
 ### v0.49.10
 
 #### Bugfixes
 
-* [[6756419a](https://github.com/boardgameio/boardgame.io/commit/6756419a)] Include `testing/package.json` in npm files
+* [[6756419a](https://github.com/boardgameio/boardgame.io/commit/6756419a)] `testing/package.json` in npm-Dateien aufgenommen
 
 
 ### v0.49.9
 
 #### Features
 
-* [[636ce8f6](https://github.com/boardgameio/boardgame.io/commit/636ce8f6)] Add testing utility for mocking the randomness API
+* [[636ce8f6](https://github.com/boardgameio/boardgame.io/commit/636ce8f6)] Test-Utility zum Mocken der Randomness-API hinzugefügt
 
 #### Bugfixes
 
-* [[99639c41](https://github.com/boardgameio/boardgame.io/commit/99639c41)] lobby: only poll matches when match list is displayed ([#1044](https://github.com/boardgameio/boardgame.io/pull/1044))
+* [[99639c41](https://github.com/boardgameio/boardgame.io/commit/99639c41)] lobby: Partien nur abfragen, wenn die Partienliste angezeigt wird ([#1044](https://github.com/boardgameio/boardgame.io/pull/1044))
 
 
 ### v0.49.8
 
 #### Features
 
-* [[bd34bc39](https://github.com/boardgameio/boardgame.io/commit/bd34bc39)] debug: Add collapse on load & hide toggle button options (PR [#1040](https://github.com/boardgameio/boardgame.io/pull/1040), Issue [#1039](https://github.com/boardgameio/boardgame.io/issues/1039))
+* [[bd34bc39](https://github.com/boardgameio/boardgame.io/commit/bd34bc39)] debug: Optionen „Einklappen beim Laden“ & „Umschaltfläche ausblenden“ hinzugefügt (PR [#1040](https://github.com/boardgameio/boardgame.io/pull/1040), Issue [#1039](https://github.com/boardgameio/boardgame.io/issues/1039))
 
 #### Bugfixes
 
-* [[ee230c14](https://github.com/boardgameio/boardgame.io/commit/ee230c14)] types: Always allow player ID array as active players argument (Issue [#1041](https://github.com/boardgameio/boardgame.io/issues/1041))
+* [[ee230c14](https://github.com/boardgameio/boardgame.io/commit/ee230c14)] types: Spieler-ID-Array immer als Argument für aktive Spieler erlauben (Issue [#1041](https://github.com/boardgameio/boardgame.io/issues/1041))
 
 
 ### v0.49.7
 
 #### Bugfixes
 
-* [[39e1f187](https://github.com/boardgameio/boardgame.io/commit/39e1f187)] Bump `rfc6902` dependency to address prototype pollution vulnerability
+* [[39e1f187](https://github.com/boardgameio/boardgame.io/commit/39e1f187)] Abhängigkeit `rfc6902` erhöht, um Schwachstelle durch Prototype Pollution zu beheben
 
 
 ### v0.49.6
 
 #### Bugfixes
 
-* [[cf6ade54](https://github.com/boardgameio/boardgame.io/commit/cf6ade54)] Add `ctx` type parameter to client ([#1035](https://github.com/boardgameio/boardgame.io/pull/1035))
+* [[cf6ade54](https://github.com/boardgameio/boardgame.io/commit/cf6ade54)] Typ-Parameter `ctx` zum Client hinzugefügt ([#1035](https://github.com/boardgameio/boardgame.io/pull/1035))
 
 
 ### v0.49.5
 
 #### Bugfixes
 
-* [[279a822f](https://github.com/boardgameio/boardgame.io/commit/279a822f)] flow: Pass correct `ctx` to `onMove` hooks
+* [[279a822f](https://github.com/boardgameio/boardgame.io/commit/279a822f)] flow: Korrektes `ctx` an `onMove`-Hooks übergeben
 
 
 ### v0.49.4
 
 #### Features
 
-* [[94472c0a](https://github.com/boardgameio/boardgame.io/commit/94472c0a)] react-native: handle multiplayer loading state in client ([#1026](https://github.com/boardgameio/boardgame.io/pull/1026))
+* [[94472c0a](https://github.com/boardgameio/boardgame.io/commit/94472c0a)] react-native: Multiplayer-Ladezustand im Client handhaben ([#1026](https://github.com/boardgameio/boardgame.io/pull/1026))
 
 #### Bugfixes
 

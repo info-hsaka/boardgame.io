@@ -1,23 +1,15 @@
-# Phases
+# Phasen
 
-Most games beyond very simple ones tend to have different
-behaviors at various phases. A game might have a phase
-at the beginning where players are drafting cards before
-entering a playing phase, for example.
+Die meisten Spiele, die über sehr einfache hinausgehen, neigen dazu, in verschiedenen Phasen unterschiedliche Verhaltensweisen zu zeigen. Ein Spiel könnte zum Beispiel zu Beginn eine Phase haben, in der die Spieler Karten ziehen (Drafting), bevor sie in eine Spielphase eintreten.
 
-Each phase in [boardgame.io](https://boardgame.io/) defines a set
-of game configuration options that are applied for the duration
-of that phase. This includes the ability to define a different
-set of moves, use a different turn order etc. **Turns happen
-inside phases**.
+Jede Phase in [boardgame.io](https://boardgame.io/) definiert einen Satz von Spielkonfigurationsoptionen, die für die Dauer dieser Phase angewendet werden. Dies beinhaltet die Möglichkeit, einen anderen Satz von Spielzügen zu definieren, eine andere Zugreihenfolge zu verwenden usw. **Züge finden innerhalb von Phasen statt**.
 
-### Card Game
+### Kartenspiel
 
-Let us start with a contrived example of a game that has exactly
-two moves:
+Beginnen wir mit einem einfachen Beispiel eines Spiels, das genau zwei Spielzüge hat:
 
-- draw a card from the deck into your hand.
-- play a card from your hand onto the deck.
+- eine Karte vom Stapel auf die Hand ziehen.
+- eine Karte von der Hand auf den Stapel spielen.
 
 ```js
 function drawCard({ G, playerID }) {
@@ -37,24 +29,22 @@ const game = {
 };
 ```
 
-?> Notice how we moved the moves out into standalone functions
-instead of inlining them in the game object.
+?> Beachte, wie wir die Spielzüge in eigenständige Funktionen ausgelagert haben, anstatt sie direkt im Spielobjekt zu definieren.
 
-We'll ignore the rendering part of this game, but this is how it might look. Note that you can draw or play a card at any time, including taking a card when the deck is empty.
+Wir ignorieren den Rendering-Teil dieses Spiels, aber so könnte es aussehen. Beachte, dass du jederzeit eine Karte ziehen oder spielen kannst, sogar wenn du eine Karte nimmst, wenn der Stapel leer ist.
 
 ```react
 <iframe class='plain' src='snippets/phases-1' height='350' scrolling='no' title='example' frameborder='no' allowtransparency='true' allowfullscreen='true'></iframe>
 ```
 
-### Phases
+### Phasen
 
-Now let's say we want the game to work in two phases:
+Nehmen wir nun an, das Spiel soll in zwei Phasen ablaufen:
 
-- a first phase where the players only draw cards (until the deck is empty).
-- a second phase where the players only play cards.
+- eine erste Phase, in der die Spieler nur Karten ziehen (bis der Stapel leer ist).
+- eine zweite Phase, in der die Spieler nur Karten spielen.
 
-In order to do this, we define two `phases`. Each phase can specify its own
-list of moves, which come into effect during that phase:
+Um dies zu tun, definieren wir zwei `phases`. Jede Phase kann ihre eigene Liste von Spielzügen (Moves) angeben, die während dieser Phase in Kraft treten:
 
 ```js
 const game = {
@@ -73,12 +63,9 @@ const game = {
 };
 ```
 
-!> A phase that doesn't specify any moves just uses moves from
-the main `moves` section in the game. 
+!> Eine Phase, die keine Spielzüge angibt, verwendet einfach die Spielzüge aus dem Hauptabschnitt `moves` des Spiels.
 
-The game doesn't begin in any of these phases. In order to begin
-in the "draw" phase, we add a `start: true` to its config. Only
-one phase can have `start: true`.
+Das Spiel beginnt in keiner dieser Phasen. Um in der „draw“-Phase zu beginnen, fügen wir `start: true` zu ihrer Konfiguration hinzu. Nur eine Phase kann `start: true` haben.
 
 ```js
 phases: {
@@ -93,8 +80,7 @@ phases: {
 }
 ```
 
-Let's also end the "draw" phase automatically once the deck is
-empty.
+Lassen wir die „draw“-Phase auch automatisch enden, sobald der Stapel leer ist.
 
 ```js
 phases: {
@@ -111,23 +97,17 @@ phases: {
 }
 ```
 
-`endIf` ends the phase that it is defined in when it returns
-`true`. The game is returned to a state where no phase is
-active. However, for this game, we want to move to
-the "play" phase once the "draw" phase is done. We specify a
-`next` option for this, which tells the framework to go to that
-phase.
+`endIf` beendet die Phase, in der es definiert ist, wenn es `true` zurückgibt. Das Spiel kehrt in einen Zustand zurück, in dem keine Phase aktiv ist. Für dieses Spiel möchten wir jedoch in die „play“-Phase wechseln, sobald die „draw“-Phase beendet ist. Dazu geben wir eine `next`-Option an, die dem Framework mitteilt, in diese Phase zu wechseln.
 
-Watch our game in action (now with phases). Notice that you can only draw cards in the first
-phase, and you can only play cards in the second phase.
+Beobachte unser Spiel in Aktion (jetzt mit Phasen). Beachte, dass du in der ersten Phase nur Karten ziehen und in der zweiten Phase nur Karten spielen kannst.
 
 ```react
 <iframe class='plain' src='snippets/phases-2' height='350' scrolling='no' title='example' frameborder='no' allowtransparency='true' allowfullscreen='true'></iframe>
 ```
 
-### Setup and Cleanup hooks
+### Setup- und Cleanup-Hooks
 
-You can also run code automatically at the beginning or end of a phase. These are specified just like normal moves in `onBegin` and `onEnd`.
+Du kannst Code auch automatisch am Anfang oder Ende einer Phase ausführen lassen. Diese werden wie normale Spielzüge in `onBegin` und `onEnd` angegeben.
 
 ```js
 phases: {

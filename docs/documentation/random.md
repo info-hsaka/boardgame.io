@@ -1,31 +1,20 @@
-# Randomness
+# Zufall (Randomness)
 
-Many games allow moves whose outcome depends on shuffled cards or rolled dice.
-Take e.g. the game [Yahtzee](https://en.wikipedia.org/wiki/Yahtzee).
-A player rolls dice, chooses some, rolls another time, chooses some more, and does a final dice roll.
-Depending on the face-up sides the player now must choose where they will score.
+Viele Spiele erlauben Spielzüge, deren Ausgang von gemischten Karten oder gewürfelten Zahlen abhängt. Nehmen wir zum Beispiel das Spiel [Kniffel (Yahtzee)](https://de.wikipedia.org/wiki/Kniffel). Ein Spieler würfelt, wählt einige Würfel aus, würfelt erneut, wählt weitere aus und führt einen letzten Wurf durch. Je nach den oben liegenden Seiten muss der Spieler nun entscheiden, wo er seine Punkte einträgt.
 
-This poses interesting challenges regarding the implementation.
+Dies stellt interessante Herausforderungen an die Implementierung dar.
 
-- **AI**. Randomness makes games interesting since you cannot predict the future, but it
-  needs to be controlled in order for allowing games that can be replayed exactly (e.g. for AI purposes).
+- **KI**. Zufall macht Spiele interessant, da man die Zukunft nicht vorhersagen kann, aber er muss kontrolliert werden, um Spiele zu ermöglichen, die exakt wiederholt werden können (z. B. für KI-Zwecke).
 
-- **<abbr title="Pseudo-Random Number Generator">PRNG</abbr> State**.
-  The game runs on both the server and client.
-  All code and data on the client can be viewed and used to a player's advantage.
-  If a client could predict the next random numbers that are to be generated, the future flow of a game stops being unpredictable.
-  The library must not allow such a scenario. The RNG and its state must stay on the server.
+- **<abbr title="Pseudo-Random Number Generator">PRNG</abbr>-Zustand**. Das Spiel läuft sowohl auf dem Server als auch auf dem Client. Jeder Code und alle Daten auf dem Client können eingesehen und zum Vorteil eines Spielers genutzt werden. Wenn ein Client die nächsten zu generierenden Zufallszahlen vorhersagen könnte, wäre der zukünftige Ablauf eines Spiels nicht mehr unvorhersehbar. Die Bibliothek darf ein solches Szenario nicht zulassen. Der RNG und sein Zustand müssen auf dem Server bleiben.
 
-- **Pure Functions**. The library is built using Redux. This is important for games since each move is a [reducer](https://redux.js.org/docs/basics/Reducers.html),
-  and thus must be pure. Calling `Math.random()` and other functions that
-  maintain external state would make the game logic impure and not idempotent.
+- **Reine Funktionen (Pure Functions)**. Die Bibliothek ist mit Redux aufgebaut. Dies ist für Spiele wichtig, da jeder Spielzug ein [Reducer](https://redux.js.org/docs/basics/Reducers.html) ist und somit rein sein muss. Der Aufruf von `Math.random()` und anderen Funktionen, die einen externen Zustand pflegen, würde die Spiellogik unrein und nicht idempotent machen.
 
-### Using Randomness in Games
+### Verwendung von Zufall in Spielen
 
-The object passed to moves and other game logic contains an object `random`,
-which exposes a range of functions for generating randomness.
+Das Objekt, das an Spielzüge und andere Spiellogik übergeben wird, enthält ein Objekt `random`, das eine Reihe von Funktionen zur Erzeugung von Zufall bereitstellt.
 
-For example, the `random.D6` function is similar to rolling six-sided dice:
+Zum Beispiel ist die Funktion `random.D6` vergleichbar mit dem Werfen eines sechsseitigen Würfels:
 
 ```js
 {
@@ -41,12 +30,11 @@ For example, the `random.D6` function is similar to rolling six-sided dice:
 }
 ```
 
-You can see details for all the available random functions below.
+Details zu allen verfügbaren Zufallsfunktionen findest du unten.
 
 ### Seed
 
-You can set the initial `seed` used for the random number generator
-on your game object:
+Du kannst den anfänglichen `seed` (Startwert) für den Zufallszahlengenerator in deinem Spielobjekt festlegen:
 
 ```js
 const game = {
@@ -55,22 +43,22 @@ const game = {
 };
 ```
 
-?> `seed` can be either a string or a number.
+?> `seed` kann entweder ein String oder eine Zahl sein.
 
-## API Reference
+## API-Referenz
 
-### 1. Die
+### 1. Die (Würfel)
 
-#### Arguments
+#### Argumente
 
-1. `spotvalue` (_number_): The die dimension (_default: 6_).
-2. `diceCount` (_number_): The number of dice to throw.
+1. `spotvalue` (_Zahl_): Die Dimension des Würfels (_Standard: 6_).
+2. `diceCount` (_Zahl_): Die Anzahl der zu werfenden Würfel.
 
-#### Returns
+#### Rückgabewert
 
-The die roll value (or an array of values if `diceCount` is greater than `1`).
+Der Wert des Würfelwurfs (oder ein Array von Werten, wenn `diceCount` größer als `1` ist).
 
-#### Usage
+#### Verwendung
 
 ```js
 const game = {
@@ -85,9 +73,9 @@ const game = {
 
 ### 2. Number
 
-Returns a random number between `0` and `1`.
+Gibt eine Zufallszahl zwischen `0` und `1` zurück.
 
-#### Usage
+#### Verwendung
 
 ```js
 const game = {
@@ -99,17 +87,17 @@ const game = {
 };
 ```
 
-### 3. Shuffle
+### 3. Shuffle (Mischen)
 
-#### Arguments
+#### Argumente
 
-1. `deck` (_array_): An array to shuffle.
+1. `deck` (_Array_): Ein zu mischendes Array.
 
-#### Returns
+#### Rückgabewert
 
-The shuffled array.
+Das gemischte Array.
 
-#### Usage
+#### Verwendung
 
 ```js
 const game = {
@@ -121,16 +109,15 @@ const game = {
 };
 ```
 
-### 4. Wrappers
+### 4. Wrapper
 
-`D4`, `D6`, `D8`, `D10`, `D12` and `D20` are wrappers around
-`Die(n)`.
+`D4`, `D6`, `D8`, `D10`, `D12` und `D20` sind Wrapper um `Die(n)`.
 
-#### Arguments
+#### Argumente
 
-1. `diceCount` (_number_): The number of dice to throw.
+1. `diceCount` (_Zahl_): Die Anzahl der zu werfenden Würfel.
 
-#### Usage
+#### Verwendung
 
 ```js
 const game = {

@@ -1,38 +1,22 @@
-# Stages
+# Etappen (Stages)
 
-Stages are a way to break a turn into smaller parts. They are useful
-when you want to restrict the set of moves that a player can make.
-A turn can be subdivided into many stages, each allowing a different
-set of moves during that stage.
+Etappen (Stages) sind eine Möglichkeit, einen Zug in kleinere Teile zu zerlegen. Sie sind nützlich, wenn du den Satz der Spielzüge einschränken möchtest, die ein Spieler ausführen kann. Ein Zug kann in viele Etappen unterteilt sein, von denen jede während dieser Etappe einen anderen Satz von Spielzügen erlaubt.
 
-Stages are also useful to allow more than one player to play during a turn.
-By default, only the `currentPlayer` is allowed to make moves during a turn.
-However, some game situations call for moves by other players. For example,
-the `currentPlayer` might play a card that requires every other player in
-the game to discard a card. These discards don't have to happen in any
-particular order, and they're not really separate turns (the `currentPlayer`
-can still play other cards before the turn finally ends). Stages are useful
-in such situations.
+Etappen sind auch nützlich, um mehr als einen Spieler während eines Zuges spielen zu lassen. Standardmäßig darf nur der `currentPlayer` während eines Zuges Spielzüge ausführen. Einige Spielsituationen erfordern jedoch Spielzüge von anderen Spielern. Zum Beispiel könnte der `currentPlayer` eine Karte spielen, die erfordert, dass jeder andere Spieler im Spiel eine Karte abwirft. Diese Abwürfe müssen nicht in einer bestimmten Reihenfolge erfolgen, und sie sind nicht wirklich separate Züge (der `currentPlayer` kann immer noch andere Karten spielen, bevor der Zug schließlich endet). Etappen sind in solchen Situationen hilfreich.
 
-Whenever one or more players enters a stage during a turn, then the framework
-only allows moves from those players (rather than `currentPlayer`). The
-players don't have to all be in the same stage either (each player can be
-in their own stage). Each player that is in a stage is now considered an
-"active" player that can make moves as allowed by the stage that they are in.
+Wann immer ein oder mehrere Spieler während eines Zuges in eine Etappe eintreten, erlaubt das Framework nur Spielzüge von diesen Spielern (anstatt vom `currentPlayer`). Die Spieler müssen auch nicht alle in derselben Etappe sein (jeder Spieler kann in seiner eigenen Etappe sein). Jeder Spieler, der sich in einer Etappe befindet, wird nun als „aktiver“ Spieler betrachtet, der Spielzüge ausführen kann, wie sie von der Etappe, in der er sich befindet, erlaubt sind.
 
-You can check `playerID` inside a move to figure out
-which player made it. This may be necessary in situations
-where multiple players are active (and could simultaneously make a move).
+Du kannst `playerID` innerhalb eines Spielzugs überprüfen, um herauszufinden, welcher Spieler ihn ausgeführt hat. Dies kann in Situationen notwendig sein, in denen mehrere Spieler aktiv sind (und gleichzeitig einen Spielzug machen könnten).
 
 ```js
 const move = ({ G, ctx, playerID }) => {
-  console.log(`move made by player ${playerID}`);
+  console.log(`Spielzug ausgeführt von Spieler ${playerID}`);
 };
 ```
 
-### Defining Stages
+### Etappen definieren
 
-Stages are defined inside a `turn` section:
+Etappen werden innerhalb eines `turn`-Abschnitts definiert:
 
 ```js
 const game = {
@@ -46,40 +30,29 @@ const game = {
     },
   },
 };
-
 ```
 
-The example above defines a single `discard` stage that players enter when they are
-required to discard a card. The stage defines its own `moves` section which specifies
-what moves a player in that stage can make. This `moves` section completely overrides
-the global `moves` section for players in that stage (players are not allowed to make
-any moves from the global `moves` section while they are in that stage). However, if
-a stage does not contain a `moves` section, then players can make moves from the global `moves`.
+Das obige Beispiel definiert eine einzelne `discard`-Etappe, in die Spieler eintreten, wenn sie eine Karte abwerfen müssen. Die Etappe definiert ihren eigenen `moves`-Abschnitt, der angibt, welche Spielzüge ein Spieler in dieser Etappe ausführen kann. Dieser `moves`-Abschnitt überschreibt den globalen `moves`-Abschnitt für Spieler in dieser Etappe vollständig (Spieler dürfen keine Spielzüge aus dem globalen `moves`-Abschnitt ausführen, während sie sich in dieser Etappe befinden). Wenn eine Etappe jedoch keinen `moves`-Abschnitt enthält, können die Spieler Spielzüge aus den globalen `moves` ausführen.
 
-!> A move defined in a stage can have the same name as a global move, but it isn't related to the global equivalent in any way.
+!> Ein in einer Etappe definierter Spielzug kann denselben Namen wie ein globaler Spielzug haben, ist aber in keiner Weise mit dem globalen Äquivalent verwandt.
 
-### Entering Stages
+### In Etappen eintreten
 
-A stage can be entered by calling the `setStage` event.
-This takes the player that called the event into the specified stage:
+Eine Etappe kann durch Aufrufen des Ereignisses `setStage` betreten werden. Dies versetzt den Spieler, der das Ereignis aufgerufen hat, in die angegebene Etappe:
 
 ```js
 setStage('discard');
 ```
 
-### Exiting Stages
+### Etappen verlassen
 
-Exiting a stage is performed by calling the `endStage` event.
-This removes the player from the stage that they are currently
-in and returns them to a state where they aren't in any stage.
+Das Verlassen einer Etappe erfolgt durch Aufrufen des Ereignisses `endStage`. Dies entfernt den Spieler aus der Etappe, in der er sich gerade befindet, und versetzt ihn in einen Zustand zurück, in dem er sich in keiner Etappe befindet.
 
 ```js
 endStage();
 ```
 
-It is possible to automatically take a player to another stage
-when `endStage` is called. This is done by specifying a `next`
-option in the stage config.
+Es ist möglich, einen Spieler automatisch in eine andere Etappe zu versetzen, wenn `endStage` aufgerufen wird. Dies geschieht durch Angabe einer `next`-Option in der Etappenkonfiguration.
 
 ```js
 stages: {
@@ -89,60 +62,49 @@ stages: {
 }
 ```
 
-In the example above, `endStage` will cycle between the three
-stages.
+Im obigen Beispiel wird `endStage` zwischen den drei Etappen wechseln.
 
-### Advanced
+### Fortgeschrittenes
 
-Sometimes you need to move a group of players into a stage
-(as opposed to just the player that called the event).
-We use the `setActivePlayers` event for this:
+Manchmal musst du eine Gruppe von Spielern in eine Etappe versetzen (im Gegensatz zu nur dem Spieler, der das Ereignis aufgerufen hat). Wir verwenden dafür das Ereignis `setActivePlayers`:
 
 ```js
 setActivePlayers({
-  // Move the current player to a stage.
+  // Versetzt den aktuellen Spieler in eine Etappe.
   currentPlayer: 'stage-name',
 
-  // Move every other player to a stage.
+  // Versetzt jeden anderen Spieler in eine Etappe.
   others: 'stage-name',
 
-  // Move all players to a stage.
+  // Versetzt alle Spieler in eine Etappe.
   all: 'stage-name',
 
-  // Enumerate the set of players and the stages that they
-  // are in.
+  // Listet die Menge der Spieler und die Etappen auf, in denen sie sich befinden.
   value: {
     '0': 'stage-name',
     '1': 'stage-name',
     ...
   },
 
-  // Prevents manual endStage before the player
-  // has made the specified number of moves.
+  // Verhindert ein manuelles endStage, bevor der Spieler die angegebene Anzahl an Spielzügen gemacht hat.
   minMoves: 1,
 
-  // Calls endStage automatically after the player
-  // has made the specified number of moves.
+  // Ruft endStage automatisch auf, nachdem der Spieler die angegebene Anzahl an Spielzügen gemacht hat.
   maxMoves: 5,
 
-  // This takes the stage configuration to the
-  // value prior to this setActivePlayers call
-  // once the set of active players becomes empty
-  // (due to players either calling endStage or
-  // maxMoves ending the stage for them).
+  // Dies setzt die Etappenkonfiguration auf den Wert vor diesem setActivePlayers-Aufruf zurück,
+  // sobald die Menge der aktiven Spieler leer wird (da Spieler entweder endStage aufrufen
+  // oder maxMoves die Etappe für sie beendet).
   revert: true,
 
-  // A next option will be used once the set of active players
-  // becomes empty (either by using maxMoves or manually removing
-  // players).
-  // All options available inside setActivePlayers are available
-  // inside next.
+  // Eine next-Option wird verwendet, sobald die Menge der aktiven Spieler leer wird
+  // (entweder durch Verwendung von maxMoves oder durch manuelles Entfernen von Spielern).
+  // Alle in setActivePlayers verfügbaren Optionen sind auch in next verfügbar.
   next: { ... },
 });
 ```
 
-Let's go back to the example we discussed earlier where we
-require every other player to discard a card when we play one:
+Kehren wir zu dem Beispiel zurück, das wir vorhin besprochen haben, bei dem wir von jedem anderen Spieler verlangen, eine Karte abzuwerfen, wenn wir eine spielen:
 
 ```js
 function playCard({ events }) {
@@ -165,13 +127,9 @@ const game = {
 <iframe class='plain' src='snippets/stages-1' height='160' scrolling='no' title='example' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>
 ```
 
-#### Advanced Move Limits
+#### Fortgeschrittene Spielzug-Limits
 
-Passing a `minMoves` argument to `setActivePlayers` forces all the
-active players to make at least that number of moves before being able to
-end the stage, but sometimes you might want to set different move limits 
-for different players. For cases like this, `setStage` and `setActivePlayers` 
-support long-form arguments:
+Die Übergabe eines `minMoves`-Arguments an `setActivePlayers` zwingt alle aktiven Spieler dazu, mindestens diese Anzahl an Spielzügen zu machen, bevor sie die Etappe beenden können. Manchmal möchtest du jedoch unterschiedliche Spielzug-Limits für verschiedene Spieler festlegen. Für Fälle wie diesen unterstützen `setStage` und `setActivePlayers` ausführliche Argumente:
 
 ```js
 setStage({ stage: 'stage-name', minMoves: 3 });
@@ -187,10 +145,7 @@ setActivePlayers({
 });
 ```
 
-Passing a `maxMoves` argument to `setActivePlayers` limits all the
-active players to making that number of moves, but sometimes you might want
-to set different move limits for different players. For cases like this,
-`setStage` and `setActivePlayers` support long-form arguments:
+Die Übergabe eines `maxMoves`-Arguments an `setActivePlayers` begrenzt alle aktiven Spieler auf diese Anzahl an Spielzügen. Manchmal möchtest du jedoch unterschiedliche Spielzug-Limits für verschiedene Spieler festlegen. Für Fälle wie diesen unterstützen `setStage` und `setActivePlayers` ausführliche Argumente:
 
 ```js
 setStage({ stage: 'stage-name', maxMoves: 3 });
@@ -208,32 +163,25 @@ setActivePlayers({
 
 ### Stage.NULL
 
-Sometimes you want to add a player to the set of active players
-but don't want them to be in a specific stage. You can use `Stage.NULL`
-for this:
+Manchmal möchtest du einen Spieler zur Menge der aktiven Spieler hinzufügen, ihn aber nicht in einer bestimmten Etappe haben. Du kannst dafür `Stage.NULL` verwenden:
 
 ```js
 import { Stage } from 'boardgame.io/core';
 
-// This allows any player to make a move, but doesn't restrict them to
-// a particular stage.
+// Dies erlaubt jedem Spieler einen Spielzug, beschränkt ihn aber nicht auf eine bestimmte Etappe.
 setActivePlayers({ all: Stage.NULL });
 ```
 
-There is also a convenient syntax to enumerate the players
-that you want in the set of active players:
+Es gibt auch eine praktische Syntax, um die Spieler aufzulisten, die du in der Menge der aktiven Spieler haben möchtest:
 
 ```js
-// Players 0 and 3 are added to the set of active players,
-// and neither is placed in a stage.
+// Die Spieler 0 und 3 werden zur Menge der aktiven Spieler hinzugefügt, und keiner von beiden wird in eine Etappe versetzt.
 setActivePlayers(['0', '3']);
 ```
 
-### Configuring active players at the beginning of a turn.
+### Aktive Spieler zu Beginn eines Zuges konfigurieren.
 
-You can have `setActivePlayers` called automatically
-at the beginning of the turn by adding an `activePlayers` section
-to the `turn` config:
+Du kannst `setActivePlayers` automatisch zu Beginn des Zuges aufrufen lassen, indem du einen `activePlayers`-Abschnitt zur `turn`-Konfiguration hinzufügst:
 
 ```js
 turn: {
@@ -241,10 +189,9 @@ turn: {
 }
 ```
 
-### Presets
+### Voreinstellungen (Presets)
 
-A number of `activePlayers` configurations are available as presets that you
-can use directly:
+Eine Reihe von `activePlayers`-Konfigurationen sind als Voreinstellungen verfügbar, die du direkt verwenden kannst:
 
 ```js
 import { ActivePlayers } from 'boardgame.io/core';
@@ -256,20 +203,16 @@ turn: {
 
 #### ALL
 
-Equivalent to `{ all: Stage.NULL }`. Any player can play, and they
-aren't restricted to any particular stage.
+Entspricht `{ all: Stage.NULL }`. Jeder Spieler kann spielen und ist nicht auf eine bestimmte Etappe beschränkt.
 
 #### ALL_ONCE
 
-Equivalent to `{ all: Stage.NULL, minMoves: 1, maxMoves: 1 }`. Any player can make
-exactly one move before they are removed from the set of active players.
+Entspricht `{ all: Stage.NULL, minMoves: 1, maxMoves: 1 }`. Jeder Spieler kann genau einen Spielzug machen, bevor er aus der Menge der aktiven Spieler entfernt wird.
 
 #### OTHERS
 
-Similar to `ALL`, but excludes the current player from the set
-of active players.
+Ähnlich wie `ALL`, schließt aber den aktuellen Spieler aus der Menge der aktiven Spieler aus.
 
 #### OTHERS_ONCE
 
-Similar to `ALL_ONCE`, but excludes the current player from the set
-of active players.
+Ähnlich wie `ALL_ONCE`, schließt aber den aktuellen Spieler aus der Menge der aktiven Spieler aus.

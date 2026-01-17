@@ -1,28 +1,28 @@
-- **Getting Started**
-  - [Concepts](/)
+- **Erste Schritte**
+  - [Konzepte](/)
   - [Tutorial](tutorial.md)
-- **Guides**
+- **Leitfäden**
   - [Multiplayer](multiplayer.md)
-  - [Turn Order](turn-order.md)
-  - [Phases](phases.md)
-  - [Stages](stages.md)
-  - [Events](events.md)
+  - [Zugreihenfolge](turn-order.md)
+  - [Phasen](phases.md)
+  - [Etappen (Stages)](stages.md)
+  - [Ereignisse](events.md)
   - [Undo / Redo](undo.md)
-  - [Randomness](random.md)
-  - [Secret State](secret-state.md)
-  - [Immutability](immutability.md)
+  - [Zufall](random.md)
+  - [Geheimer Zustand](secret-state.md)
+  - [Unveränderlichkeit](immutability.md)
   - [Plugins](plugins.md)
-  - [Debugging](debugging.md)
-  - [Testing](testing.md)
+  - [Fehlersuche](debugging.md)
+  - [Tests](testing.md)
   - [Deployment](deployment.md)
-  - [Storage](storage.md)
+  - [Speicherung](storage.md)
   - [Chat](chat.md)
   - [TypeScript](typescript.md)
-- **Reference**
+- **Referenz**
   - [Game](api/Game.md)
   - [Client](api/Client.md)
   - [Server](api/Server.md)
   - [Lobby](api/Lobby.md)
-- **More**
+- **Mehr**
   - [Changelog](/CHANGELOG.md)
-  - [Projects](/notable_projects.md)
+  - [Projekte](/notable_projects.md)

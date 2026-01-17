@@ -1,21 +1,15 @@
-# Undo / Redo
+# Rückgängig machen / Wiederholen (Undo / Redo)
 
-boardgame.io comes with built-in support to undo / redo
-moves in the current turn. This is a common pattern in
-games that allow a player to make multiple moves per turn,
-and can be a useful feature to allow the player to experiment
-with different move combinations (and seeing what they do)
-before committing to one. You can disable this feature by
-setting `disableUndo` to true in the game config.
+boardgame.io bietet integrierte Unterstützung zum Rückgängigmachen (Undo) und Wiederholen (Redo) von Spielzügen im aktuellen Zug. Dies ist ein verbreitetes Muster in Spielen, die es einem Spieler erlauben, mehrere Spielzüge pro Zug auszuführen, und kann eine nützliche Funktion sein, um dem Spieler das Experimentieren mit verschiedenen Zugkombinationen (und das Sehen ihrer Auswirkungen) zu ermöglichen, bevor er sich auf eine festlegt. Du kannst diese Funktion deaktivieren, indem du `disableUndo` in der Spielkonfiguration auf true setzt.
 
-### Usage
+### Verwendung
 
-You can call the `undo` and `redo` functions from the client.
+Du kannst die Funktionen `undo` und `redo` vom Client aus aufrufen.
 
 <!-- tabs:start -->
 #### **Plain JS**
 
-The methods are attached to a `Client` instance:
+Die Methoden sind an eine `Client`-Instanz gebunden:
 
 ```js
 client.undo();
@@ -24,7 +18,7 @@ client.redo();
 
 #### **React**
 
-The methods are passed in your board component’s `props`:
+Die Methoden werden in den `props` deiner Board-Komponente übergeben:
 
 ```js
 props.undo();
@@ -32,13 +26,9 @@ props.redo();
 ```
 <!-- tabs:end -->
 
-### Restricting Undoable Moves
+### Einschränken von rückgängig machbaren Spielzügen
 
-In case you just want specific moves to be undoable
-(to prevent peeking at cards or rerolling of dice, for example),
-you can use the long-form move syntax, which specifies the
-move as an object rather than a function. The `undoable` bit
-indicates whether the move can be undone:
+Falls du nur möchtest, dass bestimmte Spielzüge rückgängig gemacht werden können (zum Beispiel um das Spicken bei Karten oder das erneute Würfeln zu verhindern), kannst du die ausführliche Spielzug-Syntax verwenden, die den Spielzug als Objekt anstatt als Funktion angibt. Das Feld `undoable` gibt an, ob der Spielzug rückgängig gemacht werden kann:
 
 ```js
 const game = {
@@ -53,4 +43,4 @@ const game = {
 };
 ```
 
-In the example above, `playCard` will be undoable, but not `rollDice`.
+Im obigen Beispiel kann `playCard` rückgängig gemacht werden, `rollDice` jedoch nicht.

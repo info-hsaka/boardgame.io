@@ -1,55 +1,52 @@
-# Roadmap to v1.0
+# Roadmap zu v1.0
 
-This is a living document capturing the current areas of focus, and what needs to
-get done before we are ready for a v1 release.
+Dies ist ein lebendiges Dokument, das die aktuellen Schwerpunkte festhält und zeigt, was noch erledigt werden muss, bevor wir bereit für ein v1-Release sind.
 
-- _Areas that need help are marked with **[help needed]**._
-- _Stuff that [nicolodavis@](https://github.com/nicolodavis) is working on is marked with **[N]**._
+- _Bereiche, die Hilfe benötigen, sind mit **[Hilfe benötigt]** markiert._
+- _Dinge, an denen [nicolodavis@](https://github.com/nicolodavis) arbeitet, sind mit **[N]** markiert._
 
-The issues below (and some others that are not in this document) are also available on the [v1.0 milestone](https://github.com/boardgameio/boardgame.io/milestone/2) link.
+Die unten aufgeführten Issues (und einige andere, die nicht in diesem Dokument enthalten sind) sind auch über den Link [v1.0 Milestone](https://github.com/boardgameio/boardgame.io/milestone/2) verfügbar.
 
-### AI
+### KI (AI)
 
-- [x] MCTS bot ([issue](https://github.com/boardgameio/boardgame.io/issues/7#issuecomment-389453032))
-- [x] ability to add priorities and objectives ([issue](https://github.com/boardgameio/boardgame.io/issues/7#issuecomment-389453032))
-- [ ] Bots in multiplayer games ([issue](https://github.com/boardgameio/boardgame.io/issues/383)) **[help needed]**
+- [x] MCTS-Bot ([Issue](https://github.com/boardgameio/boardgame.io/issues/7#issuecomment-389453032))
+- [x] Möglichkeit zum Hinzufügen von Prioritäten und Zielen ([Issue](https://github.com/boardgameio/boardgame.io/issues/7#issuecomment-389453032))
+- [ ] Bots in Multiplayer-Spielen ([Issue](https://github.com/boardgameio/boardgame.io/issues/383)) **[Hilfe benötigt]**
 
 ### Lobby
 
-- [x] basic `create` and `join` API
-- [x] simple web-based lobby ([issue](https://github.com/boardgameio/boardgame.io/issues/197))
-- [ ] Lobby Improvements ([issue](https://github.com/boardgameio/boardgame.io/issues/354)) **[help needed]**
-- [ ] Migrate to Svelte ([issue](https://github.com/boardgameio/boardgame.io/issues/432)) **[help needed]**
+- [x] Grundlegende `create`- und `join`-API
+- [x] Einfache webbasierte Lobby ([Issue](https://github.com/boardgameio/boardgame.io/issues/197))
+- [ ] Lobby-Verbesserungen ([Issue](https://github.com/boardgameio/boardgame.io/issues/354)) **[Hilfe benötigt]**
+- [ ] Migration zu Svelte ([Issue](https://github.com/boardgameio/boardgame.io/issues/432)) **[Hilfe benötigt]**
 
-### Storage
+### Speicherung (Storage)
 
-- ##### Databases
+- ##### Datenbanken
 
-  We encourage developers to contribute third-party storage connectors, implementing
-  [the `StorageAPI.Async` interface](https://github.com/boardgameio/boardgame.io/blob/main/src/server/db/base.ts).
+  Wir ermutigen Entwickler, Speicher-Connectoren von Drittanbietern beizusteuern, indem sie [die `StorageAPI.Async`-Schnittstelle](https://github.com/boardgameio/boardgame.io/blob/main/src/server/db/base.ts) implementieren.
 
-  See the [Storage docs](https://boardgame.io/documentation/#/storage) for
-  examples and details of the backends currently available.
+  Siehe die [Storage-Dokumentation](https://boardgame.io/documentation/#/storage) für Beispiele und Details zu den aktuell verfügbaren Backends.
 
-- ##### Size / Performance
+- ##### Größe / Performance
 
-  - [ ] Explore MessagePack or other compression scheme
+  - [ ] MessagePack oder andere Kompressionsverfahren untersuchen
 
-### Core
+### Kern (Core)
 
-- [x] phases -> turns -> stages
-- [x] turn order improvements ([issue](https://github.com/boardgameio/boardgame.io/issues/154))
-- [x] log improvements ([issue](https://github.com/boardgameio/boardgame.io/issues/227))
-- [x] add immutability helper (Immer) ([issue](https://github.com/boardgameio/boardgame.io/issues/295))
+- [x] Phasen -> Züge -> Etappen (Stages)
+- [x] Verbesserungen der Zugreihenfolge ([Issue](https://github.com/boardgameio/boardgame.io/issues/154))
+- [x] Protokoll-Verbesserungen ([Issue](https://github.com/boardgameio/boardgame.io/issues/227))
+- [x] Immutability-Helper (Immer) hinzufügen ([Issue](https://github.com/boardgameio/boardgame.io/issues/295))
 
 ### Server
 
-- [x] abstract away server component ([issue](https://github.com/boardgameio/boardgame.io/issues/251))
-- [ ] server scaling ([issue](https://github.com/boardgameio/boardgame.io/issues/277))
+- [x] Server-Komponente abstrahieren ([Issue](https://github.com/boardgameio/boardgame.io/issues/251))
+- [ ] Server-Skalierung ([Issue](https://github.com/boardgameio/boardgame.io/issues/277))
 
-### Documentation
+### Dokumentation
 
-- [ ] recipes for different game scenarios
-- [ ] code organization patterns
-- [x] deployment tutorial
-- [x] tutorial using the vanilla JS client
+- [ ] Rezepte für verschiedene Spielszenarien
+- [ ] Muster zur Code-Organisation
+- [x] Deployment-Tutorial
+- [x] Tutorial zur Verwendung des Vanilla-JS-Clients

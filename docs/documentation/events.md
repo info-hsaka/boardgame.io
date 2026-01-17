@@ -1,19 +1,12 @@
-# Events
+# Ereignisse (Events)
 
-An event is used to advance the game state. It is somewhat
-analogous to a move, except that while a move changes
-`G`, an event changes `ctx`. Also, events are provided by the
-framework (as opposed to moves, which are written by you).
+Ein Ereignis (Event) wird verwendet, um den Spielzustand voranzubringen. Es ist in gewisser Weise analog zu einem Spielzug, außer dass ein Spielzug `G` ändert, während ein Ereignis `ctx` ändert. Außerdem werden Ereignisse vom Framework bereitgestellt (im Gegensatz zu Spielzügen, die von dir geschrieben werden).
 
-### Event Types
+### Ereignistypen
 
 #### endStage
 
-This event takes the player that called it out of the stage
-that they are in. If the definition for the current stage
-in the game object specifies a `next` option, then the player
-is taken to the next stage. If not, the player is
-returned to a state where they are not in any stage.
+Dieses Ereignis nimmt den Spieler, der es aufgerufen hat, aus der Etappe (Stage), in der er sich befindet. Wenn die Definition für die aktuelle Etappe im Spielobjekt eine `next`-Option angibt, wird der Spieler in die nächste Etappe versetzt. Wenn nicht, kehrt der Spieler in einen Zustand zurück, in dem er sich in keiner Etappe befindet.
 
 ```js
 endStage();
@@ -21,25 +14,18 @@ endStage();
 
 #### endTurn
 
-This event ends the turn.
-The default behavior is to increment `ctx.turn` by `1`
-and advance `currentPlayer` to the next player according
-to the configured [turn order](turn-order.md) (the default being a round-robin).
+Dieses Ereignis beendet den Zug. Das Standardverhalten besteht darin, `ctx.turn` um `1` zu erhöhen und den `currentPlayer` gemäß der konfigurierten [Zugreihenfolge](turn-order.md) zum nächsten Spieler voranzubringen (Standard ist ein Round-Robin-Verfahren).
 
-This event also accepts an argument, which (if provided)
-switches the turn to the specified player instead.
+Dieses Ereignis akzeptiert auch ein Argument, das (falls angegeben) den Zug stattdessen auf den angegebenen Spieler umschaltet.
 
 ```js
-endTurn(); // without argument
-endTurn({ next: '2' }); // Player 2 is the next player.
+endTurn(); // ohne Argument
+endTurn({ next: '2' }); // Spieler 2 ist der nächste Spieler.
 ```
 
 #### endPhase
 
-This event ends the current phase. If the definition for the
-current phase in the game object specifies a
-`next` option, then the game moves to that phase. If not, the
-game returns to a state where no phase is active.
+Dieses Ereignis beendet die aktuelle Phase. Wenn die Definition für die aktuelle Phase im Spielobjekt eine `next`-Option angibt, wechselt das Spiel in diese Phase. Wenn nicht, kehrt das Spiel in einen Zustand zurück, in dem keine Phase aktiv ist.
 
 ```js
 endPhase();
@@ -47,11 +33,7 @@ endPhase();
 
 #### endGame
 
-This event ends the game. If you pass an argument to it,
-then that argument is made available in `ctx.gameover`.
-After the game is over, further state changes to the game
-(via a move or event) are not possible.
-In order to enable the included Bot/AI logic, you must specify the winner in the `endGame` event.
+Dieses Ereignis beendet das Spiel. Wenn du ihm ein Argument übergibst, wird dieses Argument in `ctx.gameover` verfügbar gemacht. Nachdem das Spiel beendet ist, sind weitere Zustandsänderungen am Spiel (über einen Spielzug oder ein Ereignis) nicht mehr möglich. Um die enthaltene Bot/KI-Logik zu ermöglichen, musst du den Gewinner im `endGame`-Ereignis angeben.
 
 ```js
 endGame({ winner: '2' });
@@ -59,7 +41,7 @@ endGame({ winner: '2' });
 
 #### setStage
 
-Takes the player that called the event into the stage specified.
+Versetzt den Spieler, der das Ereignis aufgerufen hat, in die angegebene Etappe.
 
 ```js
 setStage('stage-name');
@@ -67,7 +49,7 @@ setStage('stage-name');
 
 #### setPhase
 
-Takes the game into the phase specified. Ends the active phase first.
+Versetzt das Spiel in die angegebene Phase. Beendet zuerst die aktive Phase.
 
 ```js
 setPhase('phase-name');
@@ -75,16 +57,11 @@ setPhase('phase-name');
 
 #### setActivePlayers
 
-Allows adding additional players to the set of "active players", and
-also any stages that you want to put them in. See the guide on [Stages](stages.md)
-for more details.
+Ermöglicht das Hinzufügen weiterer Spieler zur Menge der „aktiven Spieler“ sowie die Angabe der Etappen, in die sie versetzt werden sollen. Siehe den Leitfaden zu [Etappen](stages.md) für weitere Details.
 
-### Triggering an event from game logic.
+### Ein Ereignis aus der Spiellogik auslösen
 
-You can trigger events from a move or code inside
-your game logic (a phase’s `onBegin` hook, for example).
-This is done through the `events` API in the object passed
-as the first argument to moves:
+Du kannst Ereignisse aus einem Spielzug oder aus Code innerhalb deiner Spiellogik (z. B. dem `onBegin`-Hook einer Phase) auslösen. Dies geschieht über die `events`-API in dem Objekt, das als erstes Argument an Spielzüge übergeben wird:
 
 ```js
 moves: {
@@ -94,18 +71,15 @@ moves: {
 }
 ```
 
-!> Events are queued up and triggered **after** a move.
-Any changes you make to `G` will be applied before events are
-triggered, even if the event is called first in your move function.
+!> Ereignisse werden in eine Warteschlange gestellt und **nach** einem Spielzug ausgelöst. Alle Änderungen, die du an `G` vornimmst, werden angewendet, bevor Ereignisse ausgelöst werden, selbst wenn das Ereignis in deiner Spielzug-Funktion zuerst aufgerufen wird.
 
-### Triggering an event from the client
+### Ein Ereignis vom Client auslösen
 
 <!-- tabs:start -->
 
 #### **Plain JS**
 
-Events are available inside the `events` property of
-a boardgame.io client instance. For example:
+Ereignisse sind über die `events`-Eigenschaft einer boardgame.io-Client-Instanz verfügbar. Zum Beispiel:
 
 ```js
 import { Client } from 'boardgame.io/client';
@@ -119,8 +93,7 @@ const clickHandler = () => {
 
 #### **React**
 
-Events are available through `props` inside the
-`events` object. For example:
+Ereignisse sind über `props` innerhalb des `events`-Objekts verfügbar. Zum Beispiel:
 
 ```js
 import React from 'react';
@@ -130,19 +103,16 @@ function Board({ events }) {
     events.endTurn();
   };
 
-  return <button onClick={onClick}>End Turn</button>;
+  return <button onClick={onClick}>Zug beenden</button>;
 }
 ```
 <!-- tabs:end -->
 
-### Disabling events
+### Ereignisse deaktivieren
 
-Events can be disabled. For example, you might not want a
-player to be able to end the game directly by simply calling
-the `endGame` event.
+Ereignisse können deaktiviert werden. Zum Beispiel möchtest du vielleicht nicht, dass ein Spieler das Spiel direkt durch einfachen Aufruf des `endGame`-Ereignisses beenden kann.
 
-In order to disable an event, just add `eventName: false` to
-the `events` section in your game config.
+Um ein Ereignis zu deaktivieren, füge einfach `eventName: false` zum Abschnitt `events` in deiner Spielkonfiguration hinzu.
 
 ```js
 const game = {
@@ -153,14 +123,11 @@ const game = {
 };
 ```
 
-!> This doesn't apply to events in moves or hooks, but just the
-ability to call an event directly from a client.
+!> Dies gilt nicht für Ereignisse in Spielzügen oder Hooks, sondern nur für die Möglichkeit, ein Ereignis direkt von einem Client aus aufzurufen.
 
-### Calling events from hooks
+### Ereignisse aus Hooks aufrufen
 
-The events API is available in game hooks like it is inside moves. However,
-because of how hooks and events interact, certain events cannot be called from
-certain hooks. The following table shows which hooks support which events.
+Die Ereignis-API ist in Spiel-Hooks ebenso verfügbar wie in Spielzügen. Aufgrund der Art und Weise, wie Hooks und Ereignisse interagieren, können jedoch bestimmte Ereignisse nicht aus bestimmten Hooks aufgerufen werden. Die folgende Tabelle zeigt, welche Hooks welche Ereignisse unterstützen.
 
 |                    | turn<br>`onMove` | turn<br>`onBegin` | turn<br>`onEnd` | phase<br>`onBegin` | phase<br>`onEnd` | game<br>`onEnd` |
 |-------------------:|:----------------:|:-----------------:|:---------------:|:------------------:|:----------------:|:---------------:|
@@ -172,4 +139,4 @@ certain hooks. The following table shows which hooks support which events.
 |         `endPhase` |         ✅        |         ✅         |        ✅        |          ✅         |         ❌        |        ❌        |
 |          `endGame` |         ✅        |         ✅         |        ✅        |          ✅         |         ✅        |        ❌        |
 
-✅ = supported &nbsp;&nbsp;&nbsp; ❌ = not supported
+✅ = unterstützt &nbsp;&nbsp;&nbsp; ❌ = nicht unterstützt
